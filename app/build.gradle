@@ -49,7 +49,57 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    // Support
+    implementation deps.support.v4
+    implementation deps.support.v13
+    implementation deps.support.appCompat
+    implementation deps.support.annotations
+    implementation deps.support.design
+    implementation deps.support.recyclerView
+    implementation deps.support.cardView
+    implementation deps.support.constraintLayout
+
+    // Dagger
+    implementation deps.dagger.runtime
+    annotationProcessor deps.dagger.compiler
+
+    // Dagger Android
+    implementation deps.daggerAndroid.runtime
+    annotationProcessor deps.daggerAndroid.compiler
+
+    // Retrofit
+    implementation deps.retrofit.base
+    implementation deps.retrofit.gson
+    implementation deps.retrofit.rxAdapter
+
+    // Rx
+    implementation deps.rx.java
+    implementation deps.rx.android
+    implementation deps.rx.lifecycle
+
+    // Arch Components Room
+    implementation deps.archComponents.room.runtime
+    annotationProcessor deps.archComponents.room.compiler
+    implementation deps.archComponents.room.rxJava
+
+    // Arch Components Lifecycle
+    implementation deps.archComponents.lifecycle.extensions
+    implementation deps.archComponents.lifecycle.common
+    implementation deps.archComponents.lifecycle.reactiveStreams
+
+    // Firebase
+    implementation deps.firebase.core
+
+    // Glide
+    implementation deps.glide.runtime
+    annotationProcessor deps.glide.compiler
+
+    // Others
+    implementation deps.timber
+    implementation deps.stetho
+    implementation deps.photoView
+    implementation deps.exoPlayer
+
 }
 
 apply plugin: 'com.google.gms.google-services'
