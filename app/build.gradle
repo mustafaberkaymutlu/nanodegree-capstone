@@ -99,6 +99,7 @@ dependencies {
     implementation deps.stetho
     implementation deps.photoView
     implementation deps.exoPlayer
+    implementation deps.fabric.crashlytics
 
 }
 

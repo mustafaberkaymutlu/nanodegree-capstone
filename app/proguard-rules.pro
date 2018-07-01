@@ -20,6 +20,8 @@
 # hide the original source file name.
 -renamesourcefileattribute SourceFile
 
+# Keep custom exception classes
+-keep public class * extends java.lang.Exception
 
 ################## Glide ##################
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -29,6 +31,12 @@
   public *;
 }
 ################## Glide ##################
+
+################## Crashlytics ##################
+-keep class com.crashlytics.** { *; }
+-dontwarn com.crashlytics.**
+################## Crashlytics ##################
+
 
 
 
