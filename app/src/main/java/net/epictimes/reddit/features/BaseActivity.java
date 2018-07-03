@@ -20,7 +20,7 @@ public abstract class BaseActivity<VM extends BaseViewModel> extends AppCompatAc
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     @Inject
-    VM viewModel;
+    protected VM viewModel;
 
     protected abstract int getLayoutId();
 
