@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -11,6 +12,12 @@ android {
 
         versionCode versions.versionCode
         versionName versions.versionName
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     signingConfigs {
@@ -99,7 +106,7 @@ dependencies {
     implementation deps.stetho
     implementation deps.photoView
     implementation deps.exoPlayer
-    implementation deps.fabric.crashlytics
+    implementation(deps.fabric.crashlytics){ transitive = true }
 
 }
 
