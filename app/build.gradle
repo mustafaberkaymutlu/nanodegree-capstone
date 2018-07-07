@@ -65,6 +65,7 @@ dependencies {
     implementation deps.support.recyclerView
     implementation deps.support.cardView
     implementation deps.support.constraintLayout
+    implementation deps.support.customTabs
 
     // Dagger
     implementation deps.dagger.runtime

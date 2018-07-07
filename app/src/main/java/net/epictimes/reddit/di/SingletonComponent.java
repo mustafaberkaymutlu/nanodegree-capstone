@@ -1,6 +1,7 @@
 package net.epictimes.reddit.di;
 
 import net.epictimes.reddit.RedditApp;
+import net.epictimes.reddit.data.UserRepositoryModule;
 import net.epictimes.reddit.data.local.LocalDataSourceModule;
 import net.epictimes.reddit.data.remote.RemoteDataSourceModule;
 
@@ -15,7 +16,8 @@ import dagger.android.AndroidInjectionModule;
         AndroidInjectionModule.class,
         ActivityBuilderModule.class,
         LocalDataSourceModule.class,
-        RemoteDataSourceModule.class})
+        RemoteDataSourceModule.class,
+        UserRepositoryModule.class})
 public interface SingletonComponent {
 
     @Component.Builder

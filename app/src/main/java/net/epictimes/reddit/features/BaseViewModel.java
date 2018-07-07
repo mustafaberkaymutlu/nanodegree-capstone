@@ -9,18 +9,18 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public abstract class BaseViewModel extends ViewModel implements LifecycleObserver {
 
-    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    protected final CompositeDisposable lifecycleDisposable = new CompositeDisposable();
 
-    protected abstract void onBind(CompositeDisposable compositeDisposable);
+    protected abstract void onBind(CompositeDisposable lifecycleDisposable);
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     void onCreate() {
-        onBind(compositeDisposable);
+        onBind(lifecycleDisposable);
     }
 
     @Override
     protected void onCleared() {
-        compositeDisposable.clear();
+        lifecycleDisposable.clear();
         super.onCleared();
     }
 

@@ -3,8 +3,9 @@ package net.epictimes.reddit;
 import android.app.Activity;
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
+
 import net.epictimes.reddit.di.DaggerSingletonComponent;
-import net.epictimes.reddit.di.SingletonComponent;
 import net.epictimes.reddit.util.ReleaseLoggingTree;
 
 import javax.inject.Inject;
@@ -25,6 +26,7 @@ public class RedditApp extends Application implements HasActivityInjector {
 
         initTimber();
         initSingletonComponent();
+        Stetho.initializeWithDefaults(this);
     }
 
     private void initSingletonComponent() {

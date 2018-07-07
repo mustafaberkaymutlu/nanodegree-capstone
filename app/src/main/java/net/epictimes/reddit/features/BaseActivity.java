@@ -2,22 +2,18 @@ package net.epictimes.reddit.features;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
+
+import net.epictimes.reddit.features.alert.AlertViewEntity;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
 
-public abstract class BaseActivity<VM extends BaseViewModel> extends AppCompatActivity
-        implements HasSupportFragmentInjector {
-
-    @Inject
-    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
+public abstract class BaseActivity<VM extends BaseViewModel> extends AppCompatActivity {
 
     @Inject
     protected VM viewModel;
@@ -41,8 +37,8 @@ public abstract class BaseActivity<VM extends BaseViewModel> extends AppCompatAc
         getLifecycle().addObserver(viewModel);
     }
 
-    @Override
-    public AndroidInjector<Fragment> supportFragmentInjector() {
-        return fragmentDispatchingAndroidInjector;
+    protected void showAlert(@NonNull AlertViewEntity alertViewEntity) {
+        Toast.makeText(this, alertViewEntity.getMessage(), Toast.LENGTH_SHORT).show();
     }
+
 }
