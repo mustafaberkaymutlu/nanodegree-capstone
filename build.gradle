@@ -78,6 +78,7 @@ buildscript {
             'exoPlayer': 'com.google.android.exoplayer:exoplayer:2.8.2',
             'timber': 'com.jakewharton.timber:timber:4.7.1',
             'stetho': 'com.facebook.stetho:stetho-okhttp3:1.5.0',
+            'debugDb': "com.amitshekhar.android:debug-db:1.0.4",
     ]
 
     repositories {

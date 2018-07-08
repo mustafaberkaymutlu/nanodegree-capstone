@@ -3,6 +3,8 @@ package net.epictimes.reddit.data.local;
 import android.arch.persistence.room.Room;
 
 import net.epictimes.reddit.RedditApp;
+import net.epictimes.reddit.data.local.post.PostDao;
+import net.epictimes.reddit.data.local.user.UserDao;
 
 import javax.inject.Singleton;
 
@@ -21,8 +23,14 @@ public class LocalDataSourceModule {
 
     @Singleton
     @Provides
-    PostDao providePhotoDao(RedditDatabase chameleonDatabase) {
-        return chameleonDatabase.postDao();
+    PostDao providePostDao(RedditDatabase db) {
+        return db.postDao();
+    }
+
+    @Singleton
+    @Provides
+    UserDao provideUserDao(RedditDatabase db) {
+        return db.userDao();
     }
 
 }

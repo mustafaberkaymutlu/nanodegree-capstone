@@ -108,6 +108,7 @@ dependencies {
     implementation deps.photoView
     implementation deps.exoPlayer
     implementation(deps.fabric.crashlytics){ transitive = true }
+    debugImplementation deps.debugDb
 
 }
 

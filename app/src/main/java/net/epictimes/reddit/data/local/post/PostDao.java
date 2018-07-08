@@ -1,4 +1,4 @@
-package net.epictimes.reddit.data.local;
+package net.epictimes.reddit.data.local.post;
 
 import android.arch.persistence.room.Dao;
 

@@ -22,7 +22,8 @@ import java.util.UUID;
 
 public class LoginActivity extends BaseActivity<LoginViewModel> {
 
-    private final String uuid = UUID.randomUUID().toString();
+    private String uuid;
+    private CustomTabsServiceConnection customTabsServiceConnection;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, LoginActivity.class);
@@ -65,6 +66,16 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (customTabsServiceConnection != null) {
+            unbindService(customTabsServiceConnection);
+            customTabsServiceConnection = null;
+        }
+    }
+
     private void updateView(LoginViewEntity loginViewEntity) {
         if (loginViewEntity instanceof LoginViewEntity.Loading) {
 
@@ -80,9 +91,10 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
     }
 
     private void openLoginScreen() {
+        uuid = UUID.randomUUID().toString();
         final Uri uri = RemoteHelper.getAuthorizationUri(uuid);
 
-        final CustomTabsServiceConnection customTabsServiceConnection = new CustomTabsServiceConnection() {
+        customTabsServiceConnection = new CustomTabsServiceConnection() {
             @Override
             public void onServiceDisconnected(ComponentName name) {
 

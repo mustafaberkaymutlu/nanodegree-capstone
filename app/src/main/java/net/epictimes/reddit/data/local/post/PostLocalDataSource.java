@@ -1,4 +1,4 @@
-package net.epictimes.reddit.data.local;
+package net.epictimes.reddit.data.local.post;
 
 import net.epictimes.reddit.data.PostDataSource;
 import net.epictimes.reddit.di.qualifier.LocalDataSource;

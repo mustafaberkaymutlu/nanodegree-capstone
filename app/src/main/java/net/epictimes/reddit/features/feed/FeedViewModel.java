@@ -36,8 +36,10 @@ public class FeedViewModel extends BaseViewModel {
     private Disposable getIsUserLoggedInBehaviorSingle() {
         return isUserLoggedIn
                 .getSingle(null)
-                .subscribe(aBoolean -> {
-                            viewEntityLiveData.postValue(new FeedViewEntity.UserNotLoggedIn());
+                .subscribe(isUserLoggedIn -> {
+                            if (!isUserLoggedIn) {
+                                viewEntityLiveData.postValue(new FeedViewEntity.UserNotLoggedIn());
+                            }
                         },
                         throwable -> {
                             final AlertViewEntity alertViewEntity = alertViewEntityMapper.create(throwable);

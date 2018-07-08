@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
-public class AcquireAccessToken implements Interactor.RequestInteractor<AccessTokenEntity, Void> {
+public class AcquireAccessToken implements Interactor.RequestInteractor<AccessTokenEntity, Object> {
 
     @NonNull
     private final UserRepository userRepository;
@@ -23,7 +23,7 @@ public class AcquireAccessToken implements Interactor.RequestInteractor<AccessTo
 
     @NonNull
     @Override
-    public Single<Void> getSingle(@Nullable AccessTokenEntity accessTokenEntity) {
+    public Single<Object> getSingle(@Nullable AccessTokenEntity accessTokenEntity) {
         return userRepository.accessToken(accessTokenEntity);
     }
 }
