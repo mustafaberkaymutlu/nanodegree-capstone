@@ -15,17 +15,17 @@ import okhttp3.Credentials;
 @RemoteDataSource
 public class UserRemoteDataSource implements UserDataSource {
 
-    private final Services services;
+    private final AuthorizationServices authorizationServices;
 
     @Inject
-    public UserRemoteDataSource(Services services) {
-        this.services = services;
+    public UserRemoteDataSource(AuthorizationServices authorizationServices) {
+        this.authorizationServices = authorizationServices;
     }
 
     @Override
     public Single<AccessToken> accessToken(AccessTokenRequest request) {
-        final String auth = Credentials.basic(Services.CLIENT_ID, "");
-        return services
+        final String auth = Credentials.basic(AuthorizationServices.CLIENT_ID, "");
+        return authorizationServices
                 .accessToken(auth, request.getGrantType(), request.getCode(), request.getRedirectUri())
                 .map(response -> new AccessToken(response.getAccessToken(), response.getTokenType(), response.getExpiresIn()))
                 .subscribeOn(Schedulers.io());

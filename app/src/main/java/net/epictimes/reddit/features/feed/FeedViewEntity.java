@@ -8,6 +8,19 @@ public interface FeedViewEntity {
 
     }
 
+    class Loading implements FeedViewEntity {
+
+        private final boolean isLoading;
+
+        public Loading(boolean isLoading) {
+            this.isLoading = isLoading;
+        }
+
+        public boolean isLoading() {
+            return isLoading;
+        }
+    }
+
     class Error implements FeedViewEntity {
 
         private final AlertViewEntity alertViewEntity;

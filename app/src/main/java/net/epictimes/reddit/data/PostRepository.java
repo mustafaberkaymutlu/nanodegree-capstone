@@ -6,6 +6,8 @@ import net.epictimes.reddit.di.qualifier.RemoteDataSource;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Flowable;
+
 @Singleton
 public class PostRepository {
 
@@ -13,9 +15,13 @@ public class PostRepository {
     private final PostDataSource localDataSource;
 
     @Inject
-    public PostRepository(@RemoteDataSource PostDataSource remoteDataSource,
-                          @LocalDataSource PostDataSource localDataSource) {
+    PostRepository(@RemoteDataSource PostDataSource remoteDataSource,
+                   @LocalDataSource PostDataSource localDataSource) {
         this.remoteDataSource = remoteDataSource;
         this.localDataSource = localDataSource;
+    }
+
+    public Flowable<Object> getPopularSubreddits() {
+        return remoteDataSource.getPopularSubreddits();
     }
 }

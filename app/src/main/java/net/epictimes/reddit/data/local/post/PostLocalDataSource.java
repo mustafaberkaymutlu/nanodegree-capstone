@@ -6,6 +6,8 @@ import net.epictimes.reddit.di.qualifier.LocalDataSource;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Flowable;
+
 @LocalDataSource
 @Singleton
 public class PostLocalDataSource implements PostDataSource {
@@ -15,5 +17,11 @@ public class PostLocalDataSource implements PostDataSource {
     @Inject
     public PostLocalDataSource(PostDao postDao) {
         this.postDao = postDao;
+    }
+
+    @Override
+    public Flowable<Object> getPopularSubreddits() {
+        // TODO implement
+        return null;
     }
 }
