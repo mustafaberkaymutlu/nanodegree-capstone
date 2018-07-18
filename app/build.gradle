@@ -102,6 +102,10 @@ dependencies {
     implementation deps.glide.runtime
     annotationProcessor deps.glide.compiler
 
+    // Utils
+    implementation deps.apacheCommon.lang
+    implementation deps.apacheCommon.collections
+
     // Others
     implementation deps.timber
     implementation deps.stetho
