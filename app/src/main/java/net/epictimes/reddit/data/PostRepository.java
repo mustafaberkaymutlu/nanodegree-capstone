@@ -1,5 +1,6 @@
 package net.epictimes.reddit.data;
 
+import net.epictimes.reddit.data.model.listing.Listing;
 import net.epictimes.reddit.di.qualifier.LocalDataSource;
 import net.epictimes.reddit.di.qualifier.RemoteDataSource;
 
@@ -21,7 +22,7 @@ public class PostRepository {
         this.localDataSource = localDataSource;
     }
 
-    public Flowable<Object> getPopularSubreddits() {
+    public Flowable<Listing> getPopularSubreddits() {
         return remoteDataSource.getPopularSubreddits();
     }
 }

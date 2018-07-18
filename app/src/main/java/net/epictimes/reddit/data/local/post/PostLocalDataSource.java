@@ -1,6 +1,7 @@
 package net.epictimes.reddit.data.local.post;
 
 import net.epictimes.reddit.data.PostDataSource;
+import net.epictimes.reddit.data.model.listing.Listing;
 import net.epictimes.reddit.di.qualifier.LocalDataSource;
 
 import javax.inject.Inject;
@@ -20,7 +21,7 @@ public class PostLocalDataSource implements PostDataSource {
     }
 
     @Override
-    public Flowable<Object> getPopularSubreddits() {
+    public Flowable<Listing> getPopularSubreddits() {
         // TODO implement
         return null;
     }

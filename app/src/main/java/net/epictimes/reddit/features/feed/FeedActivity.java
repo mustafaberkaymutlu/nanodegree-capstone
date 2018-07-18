@@ -14,6 +14,8 @@ import net.epictimes.reddit.features.login.LoginActivity;
 public class FeedActivity extends BaseActivity<FeedViewModel> {
 
     private SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerView recyclerView;
+    private FeedRecyclerViewAdapter adapter;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, FeedActivity.class);
@@ -26,6 +28,7 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
 
     @Override
     protected void observeLiveData() {
+        viewModel.userNotLoggedInLiveData.observe(this, aVoid -> navigateToLogin());
         viewModel.viewEntityLiveData.observe(this, this::updateView);
     }
 
@@ -34,14 +37,23 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
         super.onCreate(savedInstanceState);
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-        final RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
+        initRecyclerView();
 
         swipeRefreshLayout.setOnRefreshListener(() -> viewModel.onUserRefreshed());
     }
 
+    private void initRecyclerView() {
+        adapter = new FeedRecyclerViewAdapter();
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+    }
+
     private void updateView(FeedViewEntity viewEntity) {
-        if (viewEntity instanceof FeedViewEntity.UserNotLoggedIn) {
-            navigateToLogin();
+        if (viewEntity instanceof FeedViewEntity.Content) {
+            final FeedViewEntity.Content feedViewEntity = (FeedViewEntity.Content) viewEntity;
+            adapter.setItems(feedViewEntity.getListing().getChildren());
         } else if (viewEntity instanceof FeedViewEntity.Error) {
             final FeedViewEntity.Error feedViewEntity = (FeedViewEntity.Error) viewEntity;
             showAlert(feedViewEntity.getAlertViewEntity());

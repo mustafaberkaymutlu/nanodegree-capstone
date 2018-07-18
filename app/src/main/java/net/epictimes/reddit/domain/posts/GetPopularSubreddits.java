@@ -3,6 +3,7 @@ package net.epictimes.reddit.domain.posts;
 import android.support.annotation.NonNull;
 
 import net.epictimes.reddit.data.PostRepository;
+import net.epictimes.reddit.data.model.listing.Listing;
 import net.epictimes.reddit.domain.Interactor;
 
 import javax.annotation.Nullable;
@@ -10,7 +11,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 
-public class GetPopularSubreddits implements Interactor.RetrieveInteractor<Object, Object> {
+public class GetPopularSubreddits implements Interactor.RetrieveInteractor<Object, Listing> {
 
     private final PostRepository postRepository;
 
@@ -21,7 +22,7 @@ public class GetPopularSubreddits implements Interactor.RetrieveInteractor<Objec
 
     @NonNull
     @Override
-    public Flowable<Object> getBehaviorStream(@Nullable Object o) {
+    public Flowable<Listing> getBehaviorStream(@Nullable Object o) {
         return postRepository.getPopularSubreddits();
     }
 }

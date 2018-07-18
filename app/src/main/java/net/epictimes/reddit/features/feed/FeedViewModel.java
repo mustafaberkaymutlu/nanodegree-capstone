@@ -17,6 +17,7 @@ import timber.log.Timber;
 
 public class FeedViewModel extends BaseViewModel {
 
+    final MutableLiveData<Void> userNotLoggedInLiveData = new MutableLiveData<>();
     final MutableLiveData<FeedViewEntity> viewEntityLiveData = new MutableLiveData<>();
 
     private final IsUserLoggedIn isUserLoggedIn;
@@ -44,7 +45,7 @@ public class FeedViewModel extends BaseViewModel {
                 .getSingle(null)
                 .subscribe(isUserLoggedIn -> {
                             if (!isUserLoggedIn) {
-                                viewEntityLiveData.postValue(new FeedViewEntity.UserNotLoggedIn());
+                                userNotLoggedInLiveData.postValue(null);
                             }
                         },
                         this::showError);
@@ -57,9 +58,8 @@ public class FeedViewModel extends BaseViewModel {
                 .doOnSubscribe(subscription -> postLoading(true))
                 .doOnNext(o -> postLoading(false))
                 .doOnTerminate(() -> postLoading(false))
-                .subscribe(o -> {
-                    Timber.d(o.toString());
-                }, this::showError);
+                .subscribe(listing -> viewEntityLiveData.postValue(new FeedViewEntity.Content(listing)),
+                        this::showError);
     }
 
     private void postLoading(boolean b) {
