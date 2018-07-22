@@ -6,6 +6,6 @@ import io.reactivex.Flowable;
 
 public interface PostDataSource {
 
-    Flowable<Listing> getPopularSubreddits();
+    Flowable<Listing> getBestPosts();
 
 }

@@ -9,7 +9,7 @@ public interface Services {
 
     String BASE_URL = "https://oauth.reddit.com";
 
-    @GET("/subreddits/popular")
-    Single<ListingResponse> getPopularSubreddits();
+    @GET("/best")
+    Single<ListingResponse> getBestPosts();
 
 }

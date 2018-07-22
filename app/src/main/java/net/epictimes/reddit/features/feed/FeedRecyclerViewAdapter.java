@@ -2,6 +2,8 @@ package net.epictimes.reddit.features.feed;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import net.epictimes.reddit.data.model.post.Post;
@@ -16,17 +18,20 @@ public class FeedRecyclerViewAdapter extends RecyclerView.Adapter<FeedViewHolder
     @NonNull
     @Override
     public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        final View view = inflater.inflate(FeedViewHolder.LAYOUT_ID, parent, false);
+        return new FeedViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull FeedViewHolder holder, int position) {
-
+        final Post post = postList.get(position);
+        holder.bind(post);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return postList.size();
     }
 
     public void setItems(List<Post> newPosts) {

@@ -9,16 +9,22 @@ public class Post {
     private String id;
 
     @Nonnull
-    private String description;
+    private String author;
 
     @Nonnull
-    private String displayNamePrefixed;
+    private String title;
+
+    @Nullable
+    private String selfText;
+
+    @Nonnull
+    private String subredditNamePrefixed;
 
     @Nullable
     private String headerImg;
 
-    @Nullable
-    private String iconImg;
+    @Nonnull
+    private String thumbnail;
 
     @Nullable
     private String bannerImg;
@@ -28,14 +34,15 @@ public class Post {
 
     private Post(Builder builder) {
         id = builder.id;
-        description = builder.description;
-        displayNamePrefixed = builder.displayNamePrefixed;
+        author = builder.author;
+        title = builder.title;
+        selfText = builder.selfText;
+        subredditNamePrefixed = builder.subredditNamePrefixed;
         headerImg = builder.headerImg;
-        iconImg = builder.iconImg;
+        thumbnail = builder.thumbnail;
         bannerImg = builder.bannerImg;
         createdUtc = builder.createdUtc;
     }
-
 
     @Nonnull
     public String getId() {
@@ -43,13 +50,23 @@ public class Post {
     }
 
     @Nonnull
-    public String getDescription() {
-        return description;
+    public String getAuthor() {
+        return author;
     }
 
     @Nonnull
-    public String getDisplayNamePrefixed() {
-        return displayNamePrefixed;
+    public String getTitle() {
+        return title;
+    }
+
+    @Nullable
+    public String getSelfText() {
+        return selfText;
+    }
+
+    @Nonnull
+    public String getSubredditNamePrefixed() {
+        return subredditNamePrefixed;
     }
 
     @Nullable
@@ -57,9 +74,9 @@ public class Post {
         return headerImg;
     }
 
-    @Nullable
-    public String getIconImg() {
-        return iconImg;
+    @Nonnull
+    public String getThumbnail() {
+        return thumbnail;
     }
 
     @Nullable
@@ -74,10 +91,12 @@ public class Post {
 
     public static final class Builder {
         private String id;
-        private String description;
-        private String displayNamePrefixed;
+        private String author;
+        private String title;
+        private String selfText;
+        private String subredditNamePrefixed;
         private String headerImg;
-        private String iconImg;
+        private String thumbnail;
         private String bannerImg;
         private long createdUtc;
 
@@ -91,14 +110,26 @@ public class Post {
         }
 
         @Nonnull
-        public Builder withDescription(@Nonnull String description) {
-            this.description = description;
+        public Builder withAuthor(@Nonnull String author) {
+            this.author = author;
             return this;
         }
 
         @Nonnull
-        public Builder withDisplayNamePrefixed(@Nonnull String displayNamePrefixed) {
-            this.displayNamePrefixed = displayNamePrefixed;
+        public Builder withTitle(@Nonnull String title) {
+            this.title = title;
+            return this;
+        }
+
+        @Nonnull
+        public Builder withSelfText(@Nonnull String selfText) {
+            this.selfText = selfText;
+            return this;
+        }
+
+        @Nonnull
+        public Builder withSubredditNamePrefixed(@Nonnull String subredditNamePrefixed) {
+            this.subredditNamePrefixed = subredditNamePrefixed;
             return this;
         }
 
@@ -109,8 +140,8 @@ public class Post {
         }
 
         @Nonnull
-        public Builder withIconImg(@Nullable String iconImg) {
-            this.iconImg = iconImg;
+        public Builder withThumbnail(@Nonnull String thumbnail) {
+            this.thumbnail = thumbnail;
             return this;
         }
 

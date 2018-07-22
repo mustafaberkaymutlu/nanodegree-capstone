@@ -4,4 +4,6 @@
     <string name="login">Login</string>
 
     <string name="error_network">Network error occurred. </string>
+
+    <string name="prefixed_author_name">u/%s</string>
 </resources>

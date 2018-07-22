@@ -23,7 +23,7 @@ public class ListingMapper implements ObservableTransformer<ListingRaw, Listing>
     private final PostMapper postMapper;
 
     @Inject
-    public ListingMapper(@NonNull PostMapper postMapper) {
+    ListingMapper(@NonNull PostMapper postMapper) {
         this.postMapper = postMapper;
     }
 
@@ -49,10 +49,6 @@ public class ListingMapper implements ObservableTransformer<ListingRaw, Listing>
 
     private void validateFields(final ListingRaw listingRaw) {
         final StringBuilder stringBuilder = new StringBuilder();
-
-        if (StringUtils.isBlank(listingRaw.getAfter())) {
-            stringBuilder.append("after cannot be empty, ");
-        }
 
         if (CollectionUtils.isEmpty(listingRaw.getChildren())) {
             stringBuilder.append("children cannot be empty, ");

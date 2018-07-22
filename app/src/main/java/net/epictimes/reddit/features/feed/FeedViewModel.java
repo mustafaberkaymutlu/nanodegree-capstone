@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
 import net.epictimes.reddit.domain.login.IsUserLoggedIn;
-import net.epictimes.reddit.domain.posts.GetPopularSubreddits;
+import net.epictimes.reddit.domain.posts.GetBestPosts;
 import net.epictimes.reddit.features.BaseViewModel;
 import net.epictimes.reddit.features.alert.AlertViewEntity;
 import net.epictimes.reddit.features.alert.AlertViewEntityMapper;
@@ -22,15 +22,15 @@ public class FeedViewModel extends BaseViewModel {
 
     private final IsUserLoggedIn isUserLoggedIn;
     private final AlertViewEntityMapper alertViewEntityMapper;
-    private final GetPopularSubreddits getPopularSubreddits;
+    private final GetBestPosts getBestPosts;
 
     @Inject
     FeedViewModel(IsUserLoggedIn isUserLoggedIn,
                   AlertViewEntityMapper alertViewEntityMapper,
-                  GetPopularSubreddits getPopularSubreddits) {
+                  GetBestPosts getBestPosts) {
         this.isUserLoggedIn = isUserLoggedIn;
         this.alertViewEntityMapper = alertViewEntityMapper;
-        this.getPopularSubreddits = getPopularSubreddits;
+        this.getBestPosts = getBestPosts;
     }
 
     @Override
@@ -53,10 +53,11 @@ public class FeedViewModel extends BaseViewModel {
 
     @NonNull
     private Disposable getPopularSubredditsBehaviourStream() {
-        return getPopularSubreddits
+        return getBestPosts
                 .getBehaviorStream(null)
                 .doOnSubscribe(subscription -> postLoading(true))
                 .doOnNext(o -> postLoading(false))
+                .doOnError(o -> postLoading(false))
                 .doOnTerminate(() -> postLoading(false))
                 .subscribe(listing -> viewEntityLiveData.postValue(new FeedViewEntity.Content(listing)),
                         this::showError);

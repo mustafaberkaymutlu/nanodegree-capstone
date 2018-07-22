@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import net.epictimes.reddit.R;
@@ -45,7 +47,13 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
 
     private void initRecyclerView() {
         adapter = new FeedRecyclerViewAdapter();
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
+        final DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
     }

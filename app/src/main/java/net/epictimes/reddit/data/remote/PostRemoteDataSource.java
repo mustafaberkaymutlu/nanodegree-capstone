@@ -26,15 +26,15 @@ public class PostRemoteDataSource implements PostDataSource {
     private final ListingMapper listingMapper;
 
     @Inject
-    public PostRemoteDataSource(@NonNull Services services, @NonNull ListingMapper listingMapper) {
+    PostRemoteDataSource(@NonNull Services services, @NonNull ListingMapper listingMapper) {
         this.services = services;
         this.listingMapper = listingMapper;
     }
 
     @Override
-    public Flowable<Listing> getPopularSubreddits() {
+    public Flowable<Listing> getBestPosts() {
         return services
-                .getPopularSubreddits()
+                .getBestPosts()
                 .subscribeOn(Schedulers.io())
                 .toObservable()
                 .map(ListingResponse::getData)

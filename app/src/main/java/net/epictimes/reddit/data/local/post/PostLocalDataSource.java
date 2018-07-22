@@ -21,7 +21,7 @@ public class PostLocalDataSource implements PostDataSource {
     }
 
     @Override
-    public Flowable<Listing> getPopularSubreddits() {
+    public Flowable<Listing> getBestPosts() {
         // TODO implement
         return null;
     }

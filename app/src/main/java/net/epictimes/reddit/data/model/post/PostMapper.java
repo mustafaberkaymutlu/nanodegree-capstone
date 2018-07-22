@@ -11,7 +11,7 @@ import io.reactivex.ObservableTransformer;
 public class PostMapper implements ObservableTransformer<PostRaw, Post> {
 
     @Inject
-    public PostMapper() {
+    PostMapper() {
     }
 
     @Override
@@ -20,10 +20,12 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
                 .doOnNext(this::validateFields)
                 .map(postRaw -> new Post.Builder()
                         .withId(postRaw.getId())
-                        .withDescription(postRaw.getDescription())
-                        .withDisplayNamePrefixed(postRaw.getDisplayNamePrefixed())
+                        .withAuthor(postRaw.getAuthor())
+                        .withTitle(postRaw.getTitle())
+                        .withSelfText(postRaw.getSelfText())
+                        .withSubredditNamePrefixed(postRaw.getSubredditNamePrefixed())
                         .withHeaderImg(postRaw.getHeaderImg())
-                        .withIconImg(postRaw.getIconImg())
+                        .withThumbnail(postRaw.getThumbnail())
                         .withBannerImg(postRaw.getBannerImg())
                         .withCreatedUtc(postRaw.getCreatedUtc())
                         .build());
@@ -36,11 +38,15 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
             stringBuilder.append("id cannot be empty, ");
         }
 
-        if (StringUtils.isBlank(postRaw.getDescription())) {
-            stringBuilder.append("description cannot be empty, ");
+        if (StringUtils.isBlank(postRaw.getAuthor())) {
+            stringBuilder.append("author cannot be empty, ");
         }
 
-        if (StringUtils.isBlank(postRaw.getDisplayNamePrefixed())) {
+        if (StringUtils.isBlank(postRaw.getTitle())) {
+            stringBuilder.append("title cannot be empty, ");
+        }
+
+        if (StringUtils.isBlank(postRaw.getSubredditNamePrefixed())) {
             stringBuilder.append("displayNamePrefixed cannot be empty, ");
         }
 

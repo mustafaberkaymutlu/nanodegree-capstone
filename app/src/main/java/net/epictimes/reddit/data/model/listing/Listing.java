@@ -12,7 +12,7 @@ public class Listing {
     @Nullable
     private String before;
 
-    @Nonnull
+    @Nullable
     private String after;
 
     @Nonnull
@@ -29,7 +29,7 @@ public class Listing {
         return before;
     }
 
-    @Nonnull
+    @Nullable
     public String getAfter() {
         return after;
     }

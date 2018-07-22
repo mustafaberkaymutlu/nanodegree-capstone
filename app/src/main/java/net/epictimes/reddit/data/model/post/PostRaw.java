@@ -7,17 +7,23 @@ public class PostRaw {
     @SerializedName("id")
     private String id;
 
-    @SerializedName("description")
-    private String description;
+    @SerializedName("author")
+    private String author;
 
-    @SerializedName("display_name_prefixed")
-    private String displayNamePrefixed;
+    @SerializedName("title")
+    private String title;
+
+    @SerializedName("selftext")
+    private String selfText;
+
+    @SerializedName("subreddit_name_prefixed")
+    private String subredditNamePrefixed;
 
     @SerializedName("header_img")
     private String headerImg;
 
-    @SerializedName("icon_img")
-    private String iconImg;
+    @SerializedName("thumbnail")
+    private String thumbnail;
 
     @SerializedName("banner_img")
     private String bannerImg;
@@ -29,20 +35,28 @@ public class PostRaw {
         return id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAuthor() {
+        return author;
     }
 
-    public String getDisplayNamePrefixed() {
-        return displayNamePrefixed;
+    public String getTitle() {
+        return title;
+    }
+
+    public String getSelfText() {
+        return selfText;
+    }
+
+    public String getSubredditNamePrefixed() {
+        return subredditNamePrefixed;
     }
 
     public String getHeaderImg() {
         return headerImg;
     }
 
-    public String getIconImg() {
-        return iconImg;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
     public String getBannerImg() {
