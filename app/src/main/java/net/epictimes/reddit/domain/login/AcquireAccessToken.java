@@ -4,12 +4,13 @@ import android.support.annotation.NonNull;
 
 import net.epictimes.reddit.data.UserRepository;
 import net.epictimes.reddit.domain.Interactor;
+import net.epictimes.reddit.util.OptionUtils;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
+import polanski.option.Option;
 
 public class AcquireAccessToken implements Interactor.RequestInteractor<AccessTokenEntity, Object> {
 
@@ -23,7 +24,7 @@ public class AcquireAccessToken implements Interactor.RequestInteractor<AccessTo
 
     @NonNull
     @Override
-    public Single<Object> getSingle(@Nullable AccessTokenEntity accessTokenEntity) {
-        return userRepository.accessToken(accessTokenEntity);
+    public Single<Object> getSingle(@Nonnull Option<AccessTokenEntity> params) {
+        return userRepository.accessToken(OptionUtils.someOrThrow(params));
     }
 }

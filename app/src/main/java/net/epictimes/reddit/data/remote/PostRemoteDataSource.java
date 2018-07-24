@@ -1,6 +1,7 @@
 package net.epictimes.reddit.data.remote;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import net.epictimes.reddit.data.PostDataSource;
 import net.epictimes.reddit.data.model.listing.Listing;
@@ -32,9 +33,9 @@ public class PostRemoteDataSource implements PostDataSource {
     }
 
     @Override
-    public Flowable<Listing> getBestPosts() {
+    public Flowable<Listing> getBestPosts(@Nullable String after) {
         return services
-                .getBestPosts()
+                .getBestPosts(after)
                 .subscribeOn(Schedulers.io())
                 .toObservable()
                 .map(ListingResponse::getData)

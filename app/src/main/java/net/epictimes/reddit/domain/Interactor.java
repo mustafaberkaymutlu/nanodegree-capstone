@@ -2,11 +2,11 @@ package net.epictimes.reddit.domain;
 
 import android.support.annotation.NonNull;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
-import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import polanski.option.Option;
 
 public interface Interactor extends UseCase {
 
@@ -17,7 +17,7 @@ public interface Interactor extends UseCase {
     interface SendInteractor<Params, Result> extends Interactor {
 
         @NonNull
-        Single<Result> getSingle(@Nullable final Params params);
+        Single<Result> getSingle(@Nonnull final Option<Params> params);
 
     }
 
@@ -27,10 +27,10 @@ public interface Interactor extends UseCase {
      * The returned {@link Flowable} will never complete, but it can error if there are any
      * problems performing the required actions to serve the data.
      */
-    interface RetrieveInteractor<Params, Object> extends Interactor {
+    interface RetrieveInteractor<Params, Result> extends Interactor {
 
         @NonNull
-        Flowable<Object> getBehaviorStream(@Nullable final Params params);
+        Flowable<Result> getBehaviorStream(@Nonnull final Option<Params> params);
 
     }
 
@@ -41,7 +41,7 @@ public interface Interactor extends UseCase {
     interface RequestInteractor<Params, Result> extends Interactor {
 
         @NonNull
-        Single<Result> getSingle(@Nullable final Params params);
+        Single<Result> getSingle(@Nonnull final Option<Params> params);
 
     }
 

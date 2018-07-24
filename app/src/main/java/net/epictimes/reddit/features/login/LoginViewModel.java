@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import polanski.option.Option;
 
 public class LoginViewModel extends BaseViewModel {
 
@@ -37,7 +38,7 @@ public class LoginViewModel extends BaseViewModel {
 
     private Disposable getAccessTokenBehaviorSingle(String code) {
         return acquireAccessToken
-                .getSingle(new AccessTokenEntity(code))
+                .getSingle(Option.ofObj(new AccessTokenEntity(code)))
                 .doOnSubscribe(disposable -> viewEntityLiveData.postValue(new LoginViewEntity.Loading()))
                 .subscribe(__ -> viewEntityLiveData.postValue(new LoginViewEntity.LoginComplete()),
                         this::showError);

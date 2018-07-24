@@ -5,12 +5,14 @@ import android.support.annotation.NonNull;
 import net.epictimes.reddit.data.UserRepository;
 import net.epictimes.reddit.domain.Interactor;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
 import io.reactivex.Single;
+import polanski.option.Option;
+import polanski.option.Unit;
 
-public class IsUserLoggedIn implements Interactor.RequestInteractor<Void, Boolean> {
+public class IsUserLoggedIn implements Interactor.RequestInteractor<Unit, Boolean> {
 
     private final UserRepository userRepository;
 
@@ -21,7 +23,7 @@ public class IsUserLoggedIn implements Interactor.RequestInteractor<Void, Boolea
 
     @NonNull
     @Override
-    public Single<Boolean> getSingle(@Nullable Void aVoid) {
+    public Single<Boolean> getSingle(@Nonnull Option<Unit> params) {
         return userRepository.isUserLoggedIn();
     }
 }

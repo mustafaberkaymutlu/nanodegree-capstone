@@ -1,5 +1,7 @@
 package net.epictimes.reddit.data;
 
+import android.support.annotation.Nullable;
+
 import net.epictimes.reddit.data.model.listing.Listing;
 import net.epictimes.reddit.di.qualifier.LocalDataSource;
 import net.epictimes.reddit.di.qualifier.RemoteDataSource;
@@ -26,7 +28,7 @@ public class PostRepository {
         this.localDataSource = localDataSource;
     }
 
-    public Flowable<Listing> getBestPosts() {
-        return remoteDataSource.getBestPosts();
+    public Flowable<Listing> getBestPosts(@Nullable String after) {
+        return remoteDataSource.getBestPosts(after);
     }
 }

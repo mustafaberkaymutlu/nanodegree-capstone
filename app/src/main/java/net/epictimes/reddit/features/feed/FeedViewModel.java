@@ -13,11 +13,13 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import polanski.option.Option;
+import polanski.option.Unit;
 import timber.log.Timber;
 
 public class FeedViewModel extends BaseViewModel {
 
-    final MutableLiveData<Void> userNotLoggedInLiveData = new MutableLiveData<>();
+    final MutableLiveData<Unit> userNotLoggedInLiveData = new MutableLiveData<>();
     final MutableLiveData<FeedViewEntity> viewEntityLiveData = new MutableLiveData<>();
 
     private final IsUserLoggedIn isUserLoggedIn;
@@ -42,10 +44,10 @@ public class FeedViewModel extends BaseViewModel {
     @NonNull
     private Disposable getIsUserLoggedInBehaviorSingle() {
         return isUserLoggedIn
-                .getSingle(null)
+                .getSingle(Option.none())
                 .subscribe(isUserLoggedIn -> {
                             if (!isUserLoggedIn) {
-                                userNotLoggedInLiveData.postValue(null);
+                                userNotLoggedInLiveData.postValue(Unit.DEFAULT);
                             }
                         },
                         this::showError);
@@ -54,7 +56,7 @@ public class FeedViewModel extends BaseViewModel {
     @NonNull
     private Disposable getPopularSubredditsBehaviourStream() {
         return getBestPosts
-                .getBehaviorStream(null)
+                .getBehaviorStream(Option.none())
                 .doOnSubscribe(subscription -> postLoading(true))
                 .doOnNext(o -> postLoading(false))
                 .doOnError(o -> postLoading(false))

@@ -30,7 +30,7 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
 
     @Override
     protected void observeLiveData() {
-        viewModel.userNotLoggedInLiveData.observe(this, aVoid -> navigateToLogin());
+        viewModel.userNotLoggedInLiveData.observe(this, __ -> navigateToLogin());
         viewModel.viewEntityLiveData.observe(this, this::updateView);
     }
 
