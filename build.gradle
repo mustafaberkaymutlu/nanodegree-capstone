@@ -83,6 +83,7 @@ buildscript {
             'timber': 'com.jakewharton.timber:timber:4.7.1',
             'stetho': 'com.facebook.stetho:stetho-okhttp3:1.5.0',
             'debugDb': "com.amitshekhar.android:debug-db:1.0.4",
+            'timeAgo' : "com.github.marlonlom:timeago:3.0.2"
     ]
 
     repositories {

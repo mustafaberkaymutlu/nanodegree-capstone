@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.marlonlom.utilities.timeago.TimeAgo;
+
 import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.model.post.Post;
 import net.epictimes.reddit.util.GlideApp;
@@ -19,6 +21,7 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
     private final TextView textViewSubredditName;
     private final TextView textViewPostTitle;
     private final TextView textViewPostSelfText;
+    private final TextView textViewTimeAgo;
 
     FeedViewHolder(View itemView) {
         super(itemView);
@@ -28,6 +31,7 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
         textViewSubredditName = itemView.findViewById(R.id.textViewSubredditName);
         textViewPostTitle = itemView.findViewById(R.id.textViewPostTitle);
         textViewPostSelfText = itemView.findViewById(R.id.textViewPostSelfText);
+        textViewTimeAgo = itemView.findViewById(R.id.textViewTimeAgo);
     }
 
     public void bind(Post post) {
@@ -42,5 +46,6 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
         textViewSubredditName.setText(post.getSubredditNamePrefixed());
         textViewPostTitle.setText(Html.fromHtml(post.getTitle()));
         textViewPostSelfText.setText(post.getSelfText());
+        textViewTimeAgo.setText(TimeAgo.using(post.getCreatedUtc() * 1000));
     }
 }
