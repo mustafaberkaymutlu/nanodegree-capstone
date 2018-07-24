@@ -1,6 +1,7 @@
 package net.epictimes.reddit.features.feed;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,10 @@ import net.epictimes.reddit.data.model.post.Post;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import timber.log.Timber;
 
 public class FeedRecyclerViewAdapter extends RecyclerView.Adapter<FeedViewHolder> {
 
@@ -34,9 +39,29 @@ public class FeedRecyclerViewAdapter extends RecyclerView.Adapter<FeedViewHolder
         return postList.size();
     }
 
-    public void setItems(List<Post> newPosts) {
+    public void setItems(@Nonnull List<Post> newPosts) {
         postList.clear();
         postList.addAll(newPosts);
         notifyDataSetChanged();
+    }
+
+    public void addItems(@Nonnull List<Post> newPosts) {
+        final int previousSize = postList.size();
+        postList.addAll(newPosts);
+        notifyItemRangeInserted(previousSize, newPosts.size());
+    }
+
+    /**
+     * @return Id of the last {@link Post} or null if the list is empty.
+     */
+    @Nullable
+    public String getLastPostId() {
+        try {
+            final Post lastPost = postList.get(postList.size() - 1);
+            return lastPost.getId();
+        } catch (IndexOutOfBoundsException e) {
+            Timber.e(e);
+            return null;
+        }
     }
 }

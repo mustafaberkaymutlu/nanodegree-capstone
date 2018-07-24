@@ -38,7 +38,7 @@ public class FeedViewModel extends BaseViewModel {
     @Override
     protected void onBind(CompositeDisposable lifecycleDisposable) {
         lifecycleDisposable.add(getIsUserLoggedInBehaviorSingle());
-        lifecycleDisposable.add(getPopularSubredditsBehaviourStream());
+        lifecycleDisposable.add(getBestPostsBehaviourStream());
     }
 
     @NonNull
@@ -54,19 +54,27 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     @NonNull
-    private Disposable getPopularSubredditsBehaviourStream() {
+    private Disposable getBestPostsBehaviourStream() {
         return getBestPosts
                 .getBehaviorStream(Option.none())
                 .doOnSubscribe(subscription -> postLoading(true))
                 .doOnNext(o -> postLoading(false))
                 .doOnError(o -> postLoading(false))
                 .doOnTerminate(() -> postLoading(false))
-                .subscribe(listing -> viewEntityLiveData.postValue(new FeedViewEntity.Content(listing)),
+                .subscribe(listing -> viewEntityLiveData.postValue(new FeedViewEntity.Content(listing, false)),
                         this::showError);
     }
 
-    private void postLoading(boolean b) {
-        viewEntityLiveData.postValue(new FeedViewEntity.Loading(b));
+    @NonNull
+    private Disposable getBestPostsLoadMoreBehaviourStream(String after) {
+        return getBestPosts
+                .getBehaviorStream(Option.ofObj(new GetBestPosts.Params(after)))
+                .subscribe(listing -> viewEntityLiveData.postValue(new FeedViewEntity.Content(listing, true)),
+                        this::showError);
+    }
+
+    private void postLoading(boolean isLoading) {
+        viewEntityLiveData.postValue(new FeedViewEntity.Loading(isLoading));
     }
 
     private void showError(Throwable throwable) {
@@ -76,6 +84,10 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     public void onUserRefreshed() {
-        lifecycleDisposable.add(getPopularSubredditsBehaviourStream());
+        lifecycleDisposable.add(getBestPostsBehaviourStream());
+    }
+
+    public void loadMore(String lastPostId) {
+        lifecycleDisposable.add(getBestPostsLoadMoreBehaviourStream(lastPostId));
     }
 }

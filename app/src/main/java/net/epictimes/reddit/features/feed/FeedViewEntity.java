@@ -8,13 +8,19 @@ public interface FeedViewEntity {
     class Content implements FeedViewEntity {
 
         private final Listing listing;
+        private final boolean paginated;
 
-        public Content(Listing listing) {
+        public Content(Listing listing, boolean paginated) {
             this.listing = listing;
+            this.paginated = paginated;
         }
 
         public Listing getListing() {
             return listing;
+        }
+
+        public boolean isPaginated() {
+            return paginated;
         }
     }
 

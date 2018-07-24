@@ -9,7 +9,14 @@ public class ChildRaw {
     @SerializedName("data")
     private PostRaw data;
 
+    @SerializedName("kind")
+    private String kind;
+
     public PostRaw getData() {
         return data;
+    }
+
+    public String getKind() {
+        return kind;
     }
 }

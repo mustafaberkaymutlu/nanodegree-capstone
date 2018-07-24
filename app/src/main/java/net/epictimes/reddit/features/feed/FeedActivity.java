@@ -10,14 +10,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import net.epictimes.reddit.R;
+import net.epictimes.reddit.data.model.listing.Listing;
 import net.epictimes.reddit.features.BaseActivity;
 import net.epictimes.reddit.features.login.LoginActivity;
+import net.epictimes.reddit.util.EndlessRecyclerViewScrollListener;
 
 public class FeedActivity extends BaseActivity<FeedViewModel> {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private FeedRecyclerViewAdapter adapter;
+    private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, FeedActivity.class);
@@ -42,7 +45,10 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
         recyclerView = findViewById(R.id.recyclerView);
         initRecyclerView();
 
-        swipeRefreshLayout.setOnRefreshListener(() -> viewModel.onUserRefreshed());
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            endlessRecyclerViewScrollListener.resetState();
+            viewModel.onUserRefreshed();
+        });
     }
 
     private void initRecyclerView() {
@@ -56,12 +62,21 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+        endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager,
+                (page, totalItemsCount, view) -> viewModel.loadMore(adapter.getLastPostId()));
+        recyclerView.addOnScrollListener(endlessRecyclerViewScrollListener);
     }
 
     private void updateView(FeedViewEntity viewEntity) {
         if (viewEntity instanceof FeedViewEntity.Content) {
             final FeedViewEntity.Content feedViewEntity = (FeedViewEntity.Content) viewEntity;
-            adapter.setItems(feedViewEntity.getListing().getChildren());
+            final Listing listing = feedViewEntity.getListing();
+
+            if (feedViewEntity.isPaginated()) {
+                adapter.addItems(listing.getChildren());
+            } else {
+                adapter.setItems(listing.getChildren());
+            }
         } else if (viewEntity instanceof FeedViewEntity.Error) {
             final FeedViewEntity.Error feedViewEntity = (FeedViewEntity.Error) viewEntity;
             showAlert(feedViewEntity.getAlertViewEntity());
