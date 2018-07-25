@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import net.epictimes.reddit.data.model.post.Post;
+import net.epictimes.reddit.util.ItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +17,29 @@ import javax.annotation.Nonnull;
 
 import timber.log.Timber;
 
-public class FeedRecyclerViewAdapter extends RecyclerView.Adapter<FeedViewHolder> {
+class FeedRecyclerViewAdapter extends RecyclerView.Adapter<FeedViewHolder> {
 
+    @Nonnull
     private final List<Post> postList = new ArrayList<>();
+
+    @Nullable
+    private PostClickListener postClickListener;
+
+    interface PostClickListener {
+        void onPostClicked(@Nonnull Post post);
+    }
 
     @NonNull
     @Override
     public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View view = inflater.inflate(FeedViewHolder.LAYOUT_ID, parent, false);
-        return new FeedViewHolder(view);
+        final ItemClickListener itemClickListener = position -> {
+            if (postClickListener != null) {
+                postClickListener.onPostClicked(postList.get(position));
+            }
+        };
+        return new FeedViewHolder(view, itemClickListener);
     }
 
     @Override
@@ -63,5 +77,9 @@ public class FeedRecyclerViewAdapter extends RecyclerView.Adapter<FeedViewHolder
             Timber.e(e);
             return null;
         }
+    }
+
+    public void setPostClickListener(@Nullable PostClickListener postClickListener) {
+        this.postClickListener = postClickListener;
     }
 }

@@ -18,6 +18,7 @@ public class LocalDataSourceModule {
     @Provides
     RedditDatabase provideChameleonDatabase(RedditApp app) {
         return Room.databaseBuilder(app, RedditDatabase.class, RedditDatabase.DATABASE_NAME)
+                .fallbackToDestructiveMigration()
                 .build();
     }
 

@@ -11,6 +11,7 @@ import com.github.marlonlom.utilities.timeago.TimeAgo;
 import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.model.post.Post;
 import net.epictimes.reddit.util.GlideApp;
+import net.epictimes.reddit.util.ItemClickListener;
 
 public class FeedViewHolder extends RecyclerView.ViewHolder {
 
@@ -23,8 +24,10 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
     private final TextView textViewPostSelfText;
     private final TextView textViewTimeAgo;
 
-    FeedViewHolder(View itemView) {
+    FeedViewHolder(View itemView, ItemClickListener itemClickListener) {
         super(itemView);
+
+        itemView.setOnClickListener(v -> itemClickListener.onItemClicked(getAdapterPosition()));
 
         imageViewIcon = itemView.findViewById(R.id.imageViewIcon);
         textViewUserName = itemView.findViewById(R.id.textViewUserName);

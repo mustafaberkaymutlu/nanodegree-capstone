@@ -12,8 +12,12 @@ import android.support.v7.widget.RecyclerView;
 import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.model.listing.Listing;
 import net.epictimes.reddit.features.BaseActivity;
+import net.epictimes.reddit.features.detail.PostDetailActivity;
 import net.epictimes.reddit.features.login.LoginActivity;
 import net.epictimes.reddit.util.EndlessRecyclerViewScrollListener;
+import net.epictimes.reddit.util.Preconditions;
+
+import javax.annotation.Nonnull;
 
 public class FeedActivity extends BaseActivity<FeedViewModel> {
 
@@ -22,7 +26,8 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
     private FeedRecyclerViewAdapter adapter;
     private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
 
-    public static Intent newIntent(Context context) {
+    public static Intent newIntent(@Nonnull Context context) {
+        Preconditions.checkNotNull(context);
         return new Intent(context, FeedActivity.class);
     }
 
@@ -35,6 +40,7 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
     protected void observeLiveData() {
         viewModel.userNotLoggedInLiveData.observe(this, __ -> navigateToLogin());
         viewModel.viewEntityLiveData.observe(this, this::updateView);
+        viewModel.navigateToPostDetail.observe(this, this::navigateToPostDetail);
     }
 
     @Override
@@ -65,9 +71,11 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
         endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager,
                 (page, totalItemsCount, view) -> viewModel.loadMore(adapter.getLastPostId()));
         recyclerView.addOnScrollListener(endlessRecyclerViewScrollListener);
+
+        adapter.setPostClickListener(viewModel::onPostClicked);
     }
 
-    private void updateView(FeedViewEntity viewEntity) {
+    private void updateView(@Nullable FeedViewEntity viewEntity) {
         if (viewEntity instanceof FeedViewEntity.Content) {
             final FeedViewEntity.Content feedViewEntity = (FeedViewEntity.Content) viewEntity;
             final Listing listing = feedViewEntity.getListing();
@@ -90,5 +98,12 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
         final Intent intent = LoginActivity.newIntent(this);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    private void navigateToPostDetail(@Nullable String postId) {
+        if (postId == null) return;
+
+        final Intent postDetailIntent = PostDetailActivity.newIntent(this, postId);
+        startActivity(postDetailIntent);
     }
 }

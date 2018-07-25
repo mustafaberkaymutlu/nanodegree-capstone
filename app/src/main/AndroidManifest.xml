@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".features.login.LoginActivity"
+        <activity
+            android:name=".features.login.LoginActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -33,6 +34,8 @@
                     android:scheme="reddit" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".features.detail.PostDetailActivity" />
 
     </application>
 </manifest>

@@ -3,12 +3,15 @@ package net.epictimes.reddit.features.feed;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
+import net.epictimes.reddit.data.model.post.Post;
 import net.epictimes.reddit.domain.login.IsUserLoggedIn;
 import net.epictimes.reddit.domain.posts.GetBestPosts;
 import net.epictimes.reddit.features.BaseViewModel;
+import net.epictimes.reddit.features.SingleLiveEvent;
 import net.epictimes.reddit.features.alert.AlertViewEntity;
 import net.epictimes.reddit.features.alert.AlertViewEntityMapper;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -19,17 +22,28 @@ import timber.log.Timber;
 
 public class FeedViewModel extends BaseViewModel {
 
+    @Nonnull
     final MutableLiveData<Unit> userNotLoggedInLiveData = new MutableLiveData<>();
+
+    @Nonnull
     final MutableLiveData<FeedViewEntity> viewEntityLiveData = new MutableLiveData<>();
 
+    @Nonnull
+    final SingleLiveEvent<String> navigateToPostDetail = new SingleLiveEvent<>();
+
+    @Nonnull
     private final IsUserLoggedIn isUserLoggedIn;
+
+    @Nonnull
     private final AlertViewEntityMapper alertViewEntityMapper;
+
+    @Nonnull
     private final GetBestPosts getBestPosts;
 
     @Inject
-    FeedViewModel(IsUserLoggedIn isUserLoggedIn,
-                  AlertViewEntityMapper alertViewEntityMapper,
-                  GetBestPosts getBestPosts) {
+    FeedViewModel(@NonNull IsUserLoggedIn isUserLoggedIn,
+                  @NonNull AlertViewEntityMapper alertViewEntityMapper,
+                  @NonNull GetBestPosts getBestPosts) {
         this.isUserLoggedIn = isUserLoggedIn;
         this.alertViewEntityMapper = alertViewEntityMapper;
         this.getBestPosts = getBestPosts;
@@ -89,5 +103,9 @@ public class FeedViewModel extends BaseViewModel {
 
     public void loadMore(String lastPostId) {
         lifecycleDisposable.add(getBestPostsLoadMoreBehaviourStream(lastPostId));
+    }
+
+    public void onPostClicked(@Nonnull Post post) {
+        navigateToPostDetail.setValue(post.getId());
     }
 }
