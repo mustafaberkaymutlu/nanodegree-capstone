@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "924521239bc95240258ec1afced381b5",
+    "identityHash": "469d38ff6387ba4e9e977e1437e07fd5",
     "entities": [
       {
         "tableName": "AccessToken",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "Post",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `author` TEXT, `title` TEXT, `selfText` TEXT, `subredditNamePrefixed` TEXT, `headerImg` TEXT, `thumbnail` TEXT, `bannerImg` TEXT, `createdUtc` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `author` TEXT, `title` TEXT, `selfText` TEXT, `subreddit` TEXT, `subredditNamePrefixed` TEXT, `headerImg` TEXT, `thumbnail` TEXT, `bannerImg` TEXT, `createdUtc` INTEGER, `url` TEXT, `domain` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -67,6 +67,12 @@
           {
             "fieldPath": "selfText",
             "columnName": "selfText",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "subreddit",
+            "columnName": "subreddit",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -99,6 +105,18 @@
             "columnName": "createdUtc",
             "affinity": "INTEGER",
             "notNull": false
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "domain",
+            "columnName": "domain",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -113,7 +131,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"924521239bc95240258ec1afced381b5\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"469d38ff6387ba4e9e977e1437e07fd5\")"
     ]
   }
 }

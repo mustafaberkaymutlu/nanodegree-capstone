@@ -7,6 +7,7 @@ import net.epictimes.reddit.data.model.post.Post;
 import net.epictimes.reddit.domain.login.IsUserLoggedIn;
 import net.epictimes.reddit.domain.posts.GetBestPosts;
 import net.epictimes.reddit.features.BaseViewModel;
+import net.epictimes.reddit.features.LoadingViewEntity;
 import net.epictimes.reddit.features.SingleLiveEvent;
 import net.epictimes.reddit.features.alert.AlertViewEntity;
 import net.epictimes.reddit.features.alert.AlertViewEntityMapper;
@@ -27,6 +28,9 @@ public class FeedViewModel extends BaseViewModel {
 
     @Nonnull
     final MutableLiveData<FeedViewEntity> viewEntityLiveData = new MutableLiveData<>();
+
+    @Nonnull
+    final MutableLiveData<LoadingViewEntity> loadingLiveData = new MutableLiveData<>();
 
     @Nonnull
     final SingleLiveEvent<String> navigateToPostDetail = new SingleLiveEvent<>();
@@ -52,7 +56,6 @@ public class FeedViewModel extends BaseViewModel {
     @Override
     protected void onBind(CompositeDisposable lifecycleDisposable) {
         lifecycleDisposable.add(getIsUserLoggedInBehaviorSingle());
-        lifecycleDisposable.add(getBestPostsBehaviourStream());
     }
 
     @NonNull
@@ -60,11 +63,17 @@ public class FeedViewModel extends BaseViewModel {
         return isUserLoggedIn
                 .getSingle(Option.none())
                 .subscribe(isUserLoggedIn -> {
-                            if (!isUserLoggedIn) {
+                            if (isUserLoggedIn) {
+                                onUserLoggedIn();
+                            } else {
                                 userNotLoggedInLiveData.postValue(Unit.DEFAULT);
                             }
                         },
                         this::showError);
+    }
+
+    private void onUserLoggedIn() {
+        lifecycleDisposable.add(getBestPostsBehaviourStream());
     }
 
     @NonNull
@@ -88,7 +97,7 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     private void postLoading(boolean isLoading) {
-        viewEntityLiveData.postValue(new FeedViewEntity.Loading(isLoading));
+        loadingLiveData.postValue(new LoadingViewEntity(isLoading));
     }
 
     private void showError(Throwable throwable) {

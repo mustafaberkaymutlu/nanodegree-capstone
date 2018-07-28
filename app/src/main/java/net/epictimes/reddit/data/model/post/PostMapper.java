@@ -23,11 +23,14 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
                         .withAuthor(postRaw.getAuthor())
                         .withTitle(postRaw.getTitle())
                         .withSelfText(postRaw.getSelfText())
+                        .withSubreddit(postRaw.getSubreddit())
                         .withSubredditNamePrefixed(postRaw.getSubredditNamePrefixed())
                         .withHeaderImg(postRaw.getHeaderImg())
                         .withThumbnail(postRaw.getThumbnail())
                         .withBannerImg(postRaw.getBannerImg())
                         .withCreatedUtc(postRaw.getCreatedUtc())
+                        .withUrl(postRaw.getUrl())
+                        .withDomain(postRaw.getDomain())
                         .build());
     }
 
@@ -52,6 +55,10 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
 
         if (postRaw.getCreatedUtc() == null) {
             stringBuilder.append("createdUtc cannot be empty. ");
+        }
+
+        if (postRaw.getDomain() == null) {
+            stringBuilder.append("domain cannot be empty. ");
         }
 
         final String message = stringBuilder.toString();

@@ -16,6 +16,9 @@ public class PostRaw {
     @SerializedName("selftext")
     private String selfText;
 
+    @SerializedName("subreddit")
+    private String subreddit;
+
     @SerializedName("subreddit_name_prefixed")
     private String subredditNamePrefixed;
 
@@ -31,6 +34,12 @@ public class PostRaw {
     @SerializedName("created_utc")
     private Long createdUtc;
 
+    @SerializedName("url")
+    private String url;
+
+    @SerializedName("domain")
+    private String domain;
+
     public String getId() {
         return id;
     }
@@ -45,6 +54,10 @@ public class PostRaw {
 
     public String getSelfText() {
         return selfText;
+    }
+
+    public String getSubreddit() {
+        return subreddit;
     }
 
     public String getSubredditNamePrefixed() {
@@ -65,5 +78,13 @@ public class PostRaw {
 
     public Long getCreatedUtc() {
         return createdUtc;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getDomain() {
+        return domain;
     }
 }

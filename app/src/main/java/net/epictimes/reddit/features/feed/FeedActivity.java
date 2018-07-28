@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.model.listing.Listing;
 import net.epictimes.reddit.features.BaseActivity;
+import net.epictimes.reddit.features.LoadingViewEntity;
 import net.epictimes.reddit.features.detail.PostDetailActivity;
 import net.epictimes.reddit.features.login.LoginActivity;
 import net.epictimes.reddit.util.EndlessRecyclerViewScrollListener;
@@ -40,6 +41,7 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
     protected void observeLiveData() {
         viewModel.userNotLoggedInLiveData.observe(this, __ -> navigateToLogin());
         viewModel.viewEntityLiveData.observe(this, this::updateView);
+        viewModel.loadingLiveData.observe(this, this::updateLoading);
         viewModel.navigateToPostDetail.observe(this, this::navigateToPostDetail);
     }
 
@@ -88,10 +90,11 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
         } else if (viewEntity instanceof FeedViewEntity.Error) {
             final FeedViewEntity.Error feedViewEntity = (FeedViewEntity.Error) viewEntity;
             showAlert(feedViewEntity.getAlertViewEntity());
-        } else if (viewEntity instanceof FeedViewEntity.Loading) {
-            final FeedViewEntity.Loading feedViewEntity = (FeedViewEntity.Loading) viewEntity;
-            swipeRefreshLayout.setRefreshing(feedViewEntity.isLoading());
         }
+    }
+
+    private void updateLoading(LoadingViewEntity viewEntity) {
+        swipeRefreshLayout.setRefreshing(viewEntity.isLoading());
     }
 
     private void navigateToLogin() {

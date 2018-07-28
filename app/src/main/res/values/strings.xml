@@ -6,4 +6,5 @@
     <string name="error_network">Network error occurred. </string>
 
     <string name="prefixed_author_name">u/%s</string>
+    <string name="go_to_link">Go to %s</string>
 </resources>

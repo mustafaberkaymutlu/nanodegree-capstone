@@ -25,6 +25,9 @@ public class Post {
     private String selfText;
 
     @Nonnull
+    private String subreddit;
+
+    @Nonnull
     private String subredditNamePrefixed;
 
     @Nullable
@@ -39,6 +42,12 @@ public class Post {
     @Nonnull
     private Long createdUtc;
 
+    @Nullable
+    private String url;
+
+    @NonNull
+    private String domain;
+
     public Post() {
     }
 
@@ -47,11 +56,14 @@ public class Post {
         author = builder.author;
         title = builder.title;
         selfText = builder.selfText;
+        subreddit = builder.subreddit;
         subredditNamePrefixed = builder.subredditNamePrefixed;
         headerImg = builder.headerImg;
         thumbnail = builder.thumbnail;
         bannerImg = builder.bannerImg;
         createdUtc = builder.createdUtc;
+        url = builder.url;
+        domain = builder.domain;
     }
 
     @Nonnull
@@ -88,6 +100,15 @@ public class Post {
 
     public void setSelfText(@Nullable String selfText) {
         this.selfText = selfText;
+    }
+
+    @Nonnull
+    public String getSubreddit() {
+        return subreddit;
+    }
+
+    public void setSubreddit(@Nonnull String subreddit) {
+        this.subreddit = subreddit;
     }
 
     @Nonnull
@@ -135,16 +156,37 @@ public class Post {
         this.createdUtc = createdUtc;
     }
 
+    @Nullable
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(@Nullable String url) {
+        this.url = url;
+    }
+
+    @NonNull
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(@NonNull String domain) {
+        this.domain = domain;
+    }
+
     public static final class Builder {
         private String id;
         private String author;
         private String title;
         private String selfText;
+        private String subreddit;
         private String subredditNamePrefixed;
         private String headerImg;
         private String thumbnail;
         private String bannerImg;
         private long createdUtc;
+        private String url;
+        private String domain;
 
         public Builder() {
         }
@@ -170,6 +212,12 @@ public class Post {
         @Nonnull
         public Builder withSelfText(@Nonnull String selfText) {
             this.selfText = selfText;
+            return this;
+        }
+
+        @Nonnull
+        public Builder withSubreddit(@Nonnull String subreddit) {
+            this.subreddit = subreddit;
             return this;
         }
 
@@ -200,6 +248,18 @@ public class Post {
         @Nonnull
         public Builder withCreatedUtc(Long createdUtc) {
             this.createdUtc = createdUtc;
+            return this;
+        }
+
+        @Nonnull
+        public Builder withUrl(@Nullable String url) {
+            this.url = url;
+            return this;
+        }
+
+        @Nonnull
+        public Builder withDomain(@NonNull String domain) {
+            this.domain = domain;
             return this;
         }
 
