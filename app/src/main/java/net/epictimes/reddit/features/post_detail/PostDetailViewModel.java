@@ -1,10 +1,11 @@
-package net.epictimes.reddit.features.detail;
+package net.epictimes.reddit.features.post_detail;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
 import net.epictimes.reddit.domain.posts.GetPost;
 import net.epictimes.reddit.features.BaseViewModel;
+import net.epictimes.reddit.features.SingleLiveEvent;
 import net.epictimes.reddit.features.alert.AlertViewEntity;
 import net.epictimes.reddit.features.alert.AlertViewEntityMapper;
 
@@ -22,6 +23,12 @@ public class PostDetailViewModel extends BaseViewModel {
     final MutableLiveData<PostDetailViewEntity> viewEntityLiveData = new MutableLiveData<>();
 
     @Nonnull
+    final MutableLiveData<AlertViewEntity> alertViewEntitySingleLiveEvent = new SingleLiveEvent<>();
+
+    @Nonnull
+    final SingleLiveEvent<String> navigateToImageDetailEvent = new SingleLiveEvent<>();
+
+    @Nonnull
     private final GetPost getPost;
 
     @Nonnull
@@ -33,7 +40,7 @@ public class PostDetailViewModel extends BaseViewModel {
     @Inject
     PostDetailViewModel(@Nonnull GetPost getPost,
                         @Nonnull AlertViewEntityMapper alertViewEntityMapper,
-                        @Nonnull String postId) {
+                        @PostId @Nonnull String postId) {
         this.getPost = getPost;
         this.alertViewEntityMapper = alertViewEntityMapper;
         this.postId = postId;
@@ -48,13 +55,22 @@ public class PostDetailViewModel extends BaseViewModel {
     private Disposable getPostBehaviorStream() {
         return getPost
                 .getBehaviorStream(Option.ofObj(postId))
-                .subscribe(post -> viewEntityLiveData.postValue(new PostDetailViewEntity.Content(post)),
+                .subscribe(post -> viewEntityLiveData.postValue(new PostDetailViewEntity(post)),
                         this::showError);
     }
 
     private void showError(Throwable throwable) {
         Timber.e(throwable);
         final AlertViewEntity alertViewEntity = alertViewEntityMapper.create(throwable);
-        viewEntityLiveData.postValue(new PostDetailViewEntity.Error(alertViewEntity));
+        alertViewEntitySingleLiveEvent.postValue(alertViewEntity);
+    }
+
+    public void onImageClicked() {
+        final PostDetailViewEntity viewEntity = viewEntityLiveData.getValue();
+
+        if (viewEntity != null) {
+            final String imageUrl = viewEntity.getPost().getPreviewImage();
+            navigateToImageDetailEvent.setValue(imageUrl);
+        }
     }
 }

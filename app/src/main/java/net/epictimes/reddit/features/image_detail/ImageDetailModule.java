@@ -1,4 +1,4 @@
-package net.epictimes.reddit.features.detail;
+package net.epictimes.reddit.features.image_detail;
 
 import android.os.Bundle;
 
@@ -9,13 +9,14 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class PostDetailModule {
+public class ImageDetailModule {
 
+    @Url
     @ActivityScoped
     @Provides
-    String providePostId(PostDetailActivity activity) {
+    String provideUrl(ImageDetailActivity activity) {
         final Bundle extras = Preconditions.checkNotNull(activity.getIntent().getExtras());
-        return extras.getString(PostDetailActivity.KEY_POST_ID);
+        return extras.getString(ImageDetailActivity.KEY_URL);
     }
 
 }

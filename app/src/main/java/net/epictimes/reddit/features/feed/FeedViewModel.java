@@ -33,7 +33,10 @@ public class FeedViewModel extends BaseViewModel {
     final MutableLiveData<LoadingViewEntity> loadingLiveData = new MutableLiveData<>();
 
     @Nonnull
-    final SingleLiveEvent<String> navigateToPostDetail = new SingleLiveEvent<>();
+    final SingleLiveEvent<String> navigateToPostDetailEvent = new SingleLiveEvent<>();
+
+    @Nonnull
+    final SingleLiveEvent<String> navigateToImageDetailEvent = new SingleLiveEvent<>();
 
     @Nonnull
     private final IsUserLoggedIn isUserLoggedIn;
@@ -115,6 +118,10 @@ public class FeedViewModel extends BaseViewModel {
     }
 
     public void onPostClicked(@Nonnull Post post) {
-        navigateToPostDetail.setValue(post.getId());
+        navigateToPostDetailEvent.setValue(post.getId());
+    }
+
+    public void onImageClicked(Post post) {
+        navigateToImageDetailEvent.setValue(post.getPreviewImage());
     }
 }

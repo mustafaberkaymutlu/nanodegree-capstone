@@ -1,10 +1,11 @@
-package net.epictimes.reddit.features.detail;
+package net.epictimes.reddit.features.post_detail;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
@@ -20,6 +21,7 @@ import com.github.marlonlom.utilities.timeago.TimeAgo;
 import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.model.post.Post;
 import net.epictimes.reddit.features.BaseActivity;
+import net.epictimes.reddit.features.image_detail.ImageDetailActivity;
 import net.epictimes.reddit.util.GlideApp;
 import net.epictimes.reddit.util.Preconditions;
 
@@ -64,6 +66,8 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         textViewTimeAgo = findViewById(R.id.textViewTimeAgo);
         imageViewPostImage = findViewById(R.id.imageViewPostImage);
         buttonUrl = findViewById(R.id.buttonUrl);
+
+        imageViewPostImage.setOnClickListener(v -> viewModel.onImageClicked());
     }
 
     @Override
@@ -84,19 +88,17 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
     @Override
     protected void observeLiveData() {
         viewModel.viewEntityLiveData.observe(this, this::updateView);
+        viewModel.alertViewEntitySingleLiveEvent.observe(this, this::showAlert);
+        viewModel.navigateToImageDetailEvent.observe(this, this::navigateToImageDetail);
     }
 
     private void updateView(@Nullable PostDetailViewEntity viewEntity) {
-        if (viewEntity instanceof PostDetailViewEntity.Content) {
-            final PostDetailViewEntity.Content content = (PostDetailViewEntity.Content) viewEntity;
-            updateContent(content);
-        } else if (viewEntity instanceof PostDetailViewEntity.Error) {
-            final PostDetailViewEntity.Error feedViewEntity = (PostDetailViewEntity.Error) viewEntity;
-            showAlert(feedViewEntity.getAlertViewEntity());
+        if (viewEntity != null) {
+            updateContent(viewEntity);
         }
     }
 
-    private void updateContent(PostDetailViewEntity.Content content) {
+    private void updateContent(@NonNull PostDetailViewEntity content) {
         final Post post = content.getPost();
         final String prefixedAuthorName = textViewUserName.getContext().getString(R.string.prefixed_author_name,
                 post.getAuthor());
@@ -147,5 +149,12 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         };
 
         CustomTabsClient.bindCustomTabsService(this, "com.android.chrome", customTabsServiceConnection);
+    }
+
+    private void navigateToImageDetail(@Nullable String url) {
+        if (url == null) return;
+
+        final Intent imageDetailIntent = ImageDetailActivity.newIntent(this, url);
+        startActivity(imageDetailIntent);
     }
 }

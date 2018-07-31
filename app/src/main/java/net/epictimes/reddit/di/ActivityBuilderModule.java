@@ -1,9 +1,11 @@
 package net.epictimes.reddit.di;
 
 import net.epictimes.reddit.di.scope.ActivityScoped;
-import net.epictimes.reddit.features.detail.PostDetailActivity;
-import net.epictimes.reddit.features.detail.PostDetailModule;
+import net.epictimes.reddit.features.post_detail.PostDetailActivity;
+import net.epictimes.reddit.features.post_detail.PostDetailModule;
 import net.epictimes.reddit.features.feed.FeedActivity;
+import net.epictimes.reddit.features.image_detail.ImageDetailActivity;
+import net.epictimes.reddit.features.image_detail.ImageDetailModule;
 import net.epictimes.reddit.features.login.LoginActivity;
 
 import dagger.Module;
@@ -22,6 +24,10 @@ abstract class ActivityBuilderModule {
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = PostDetailModule.class)
-    abstract PostDetailActivity contributePostdetailActivityInjector();
+    abstract PostDetailActivity contributePostDetailActivityInjector();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = ImageDetailModule.class)
+    abstract ImageDetailActivity contributeImageDetailActivityInjector();
 
 }

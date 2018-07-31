@@ -35,7 +35,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".features.detail.PostDetailActivity" />
+        <activity android:name=".features.post_detail.PostDetailActivity" />
+
+        <activity android:name=".features.image_detail.ImageDetailActivity" />
 
     </application>
 </manifest>

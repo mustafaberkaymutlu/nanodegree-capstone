@@ -13,7 +13,8 @@ import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.model.listing.Listing;
 import net.epictimes.reddit.features.BaseActivity;
 import net.epictimes.reddit.features.LoadingViewEntity;
-import net.epictimes.reddit.features.detail.PostDetailActivity;
+import net.epictimes.reddit.features.post_detail.PostDetailActivity;
+import net.epictimes.reddit.features.image_detail.ImageDetailActivity;
 import net.epictimes.reddit.features.login.LoginActivity;
 import net.epictimes.reddit.util.EndlessRecyclerViewScrollListener;
 import net.epictimes.reddit.util.Preconditions;
@@ -42,7 +43,8 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
         viewModel.userNotLoggedInLiveData.observe(this, __ -> navigateToLogin());
         viewModel.viewEntityLiveData.observe(this, this::updateView);
         viewModel.loadingLiveData.observe(this, this::updateLoading);
-        viewModel.navigateToPostDetail.observe(this, this::navigateToPostDetail);
+        viewModel.navigateToPostDetailEvent.observe(this, this::navigateToPostDetail);
+        viewModel.navigateToImageDetailEvent.observe(this, this::navigateToImageDetail);
     }
 
     @Override
@@ -75,6 +77,7 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
         recyclerView.addOnScrollListener(endlessRecyclerViewScrollListener);
 
         adapter.setPostClickListener(viewModel::onPostClicked);
+        adapter.setImageClickListener(viewModel::onImageClicked);
     }
 
     private void updateView(@Nullable FeedViewEntity viewEntity) {
@@ -108,5 +111,12 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
 
         final Intent postDetailIntent = PostDetailActivity.newIntent(this, postId);
         startActivity(postDetailIntent);
+    }
+
+    private void navigateToImageDetail(@Nullable String url) {
+        if (url == null) return;
+
+        final Intent imageDetailIntent = ImageDetailActivity.newIntent(this, url);
+        startActivity(imageDetailIntent);
     }
 }

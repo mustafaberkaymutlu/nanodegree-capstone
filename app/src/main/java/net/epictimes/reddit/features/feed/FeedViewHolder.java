@@ -28,10 +28,10 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
     private final TextView textViewTimeAgo;
     private final ImageView imageViewPostImage;
 
-    FeedViewHolder(View itemView, ItemClickListener itemClickListener) {
+    FeedViewHolder(View itemView,
+                   ItemClickListener postClickListener,
+                   ItemClickListener imageClickListener) {
         super(itemView);
-
-        itemView.setOnClickListener(v -> itemClickListener.onItemClicked(getAdapterPosition()));
 
         imageViewIcon = itemView.findViewById(R.id.imageViewIcon);
         textViewUserName = itemView.findViewById(R.id.textViewUserName);
@@ -40,6 +40,9 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
         textViewPostSelfText = itemView.findViewById(R.id.textViewPostSelfText);
         textViewTimeAgo = itemView.findViewById(R.id.textViewTimeAgo);
         imageViewPostImage = itemView.findViewById(R.id.imageViewPostImage);
+
+        imageViewPostImage.setOnClickListener(v -> imageClickListener.onItemClicked(getAdapterPosition()));
+        itemView.setOnClickListener(v -> postClickListener.onItemClicked(getAdapterPosition()));
     }
 
     public void bind(@NonNull Post post) {

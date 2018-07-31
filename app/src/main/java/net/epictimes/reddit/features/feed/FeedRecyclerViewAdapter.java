@@ -25,8 +25,15 @@ class FeedRecyclerViewAdapter extends RecyclerView.Adapter<FeedViewHolder> {
     @Nullable
     private PostClickListener postClickListener;
 
+    @Nullable
+    private ImageClickListener imageClickListener;
+
     interface PostClickListener {
         void onPostClicked(@Nonnull Post post);
+    }
+
+    interface ImageClickListener {
+        void onImageClicked(@Nonnull Post post);
     }
 
     @NonNull
@@ -34,12 +41,17 @@ class FeedRecyclerViewAdapter extends RecyclerView.Adapter<FeedViewHolder> {
     public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         final View view = inflater.inflate(FeedViewHolder.LAYOUT_ID, parent, false);
-        final ItemClickListener itemClickListener = position -> {
+        final ItemClickListener postItemClickListener = (position) -> {
             if (postClickListener != null) {
                 postClickListener.onPostClicked(postList.get(position));
             }
         };
-        return new FeedViewHolder(view, itemClickListener);
+        final ItemClickListener imageItemClickListener = (position) -> {
+            if (imageClickListener != null) {
+                imageClickListener.onImageClicked(postList.get(position));
+            }
+        };
+        return new FeedViewHolder(view, postItemClickListener, imageItemClickListener);
     }
 
     @Override
@@ -81,5 +93,9 @@ class FeedRecyclerViewAdapter extends RecyclerView.Adapter<FeedViewHolder> {
 
     public void setPostClickListener(@Nullable PostClickListener postClickListener) {
         this.postClickListener = postClickListener;
+    }
+
+    public void setImageClickListener(@Nullable ImageClickListener imageClickListener) {
+        this.imageClickListener = imageClickListener;
     }
 }
