@@ -29,22 +29,25 @@ public class ListingMapper implements ObservableTransformer<ListingRaw, Listing>
 
     @Override
     public ObservableSource<Listing> apply(Observable<ListingRaw> upstream) {
-        final Observable<ListingRaw> validatedStream = upstream
-                .doOnNext(this::validateFields);
+        return upstream
+                .doOnNext(this::validateFields)
+                .flatMap(listingRaw ->
+                        Observable
+                                .fromIterable(listingRaw.getChildren())
+                                .map(ChildRaw::getData)
+                                .compose(postMapper)
+                                .toList()
+                                .toObservable()
+                                .map(posts -> buildListing(listingRaw, posts)));
+    }
 
-        final Observable<List<Post>> mappedChildrenStream = validatedStream
-                .flatMap(listingRaw -> Observable.fromIterable(listingRaw.getChildren()))
-                .map(ChildRaw::getData)
-                .compose(postMapper)
-                .toList()
-                .toObservable();
-
-        return Observable.zip(validatedStream, mappedChildrenStream, (t1, t2) ->
-                new Listing.Builder()
-                        .withBefore(t1.getBefore())
-                        .withAfter(t1.getAfter())
-                        .withChildren(t2)
-                        .build());
+    @NonNull
+    private Listing buildListing(@NonNull ListingRaw listingRaw, @NonNull List<Post> posts) {
+        return new Listing.Builder()
+                .withBefore(listingRaw.getBefore())
+                .withAfter(listingRaw.getAfter())
+                .withChildren(posts)
+                .build();
     }
 
     private void validateFields(final ListingRaw listingRaw) {

@@ -48,6 +48,9 @@ public class Post {
     @NonNull
     private String domain;
 
+    @Nullable
+    private String previewImage;
+
     public Post() {
     }
 
@@ -64,6 +67,7 @@ public class Post {
         createdUtc = builder.createdUtc;
         url = builder.url;
         domain = builder.domain;
+        previewImage = builder.previewImage;
     }
 
     @Nonnull
@@ -174,6 +178,15 @@ public class Post {
         this.domain = domain;
     }
 
+    @Nullable
+    public String getPreviewImage() {
+        return previewImage;
+    }
+
+    public void setPreviewImage(@Nullable String previewImage) {
+        this.previewImage = previewImage;
+    }
+
     public static final class Builder {
         private String id;
         private String author;
@@ -187,6 +200,7 @@ public class Post {
         private long createdUtc;
         private String url;
         private String domain;
+        private String previewImage;
 
         public Builder() {
         }
@@ -260,6 +274,12 @@ public class Post {
         @Nonnull
         public Builder withDomain(@NonNull String domain) {
             this.domain = domain;
+            return this;
+        }
+
+        @Nonnull
+        public Builder withPreviewImage(@Nullable String previewImage) {
+            this.previewImage = previewImage;
             return this;
         }
 

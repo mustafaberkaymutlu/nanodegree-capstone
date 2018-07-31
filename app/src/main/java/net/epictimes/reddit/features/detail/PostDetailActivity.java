@@ -23,6 +23,8 @@ import net.epictimes.reddit.features.BaseActivity;
 import net.epictimes.reddit.util.GlideApp;
 import net.epictimes.reddit.util.Preconditions;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.annotation.Nonnull;
 
 import dagger.android.AndroidInjection;
@@ -115,6 +117,16 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
                 .with(this)
                 .load(post.getThumbnail())
                 .into(imageViewIcon);
+
+        if (StringUtils.isBlank(post.getPreviewImage())) {
+            imageViewPostImage.setVisibility(View.GONE);
+        } else {
+            imageViewPostImage.setVisibility(View.VISIBLE);
+            GlideApp
+                    .with(this)
+                    .load(post.getPreviewImage())
+                    .into(imageViewPostImage);
+        }
     }
 
     private void openUrl(String url) {

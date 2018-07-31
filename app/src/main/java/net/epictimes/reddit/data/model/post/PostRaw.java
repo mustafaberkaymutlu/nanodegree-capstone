@@ -2,6 +2,8 @@ package net.epictimes.reddit.data.model.post;
 
 import com.google.gson.annotations.SerializedName;
 
+import net.epictimes.reddit.data.model.preview.PreviewRaw;
+
 public class PostRaw {
 
     @SerializedName("id")
@@ -39,6 +41,9 @@ public class PostRaw {
 
     @SerializedName("domain")
     private String domain;
+
+    @SerializedName("preview")
+    private PreviewRaw previewRaw;
 
     public String getId() {
         return id;
@@ -86,5 +91,9 @@ public class PostRaw {
 
     public String getDomain() {
         return domain;
+    }
+
+    public PreviewRaw getPreviewRaw() {
+        return previewRaw;
     }
 }

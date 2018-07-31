@@ -1,5 +1,6 @@
 package net.epictimes.reddit.features.feed;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.View;
@@ -13,6 +14,8 @@ import net.epictimes.reddit.data.model.post.Post;
 import net.epictimes.reddit.util.GlideApp;
 import net.epictimes.reddit.util.ItemClickListener;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class FeedViewHolder extends RecyclerView.ViewHolder {
 
     public static int LAYOUT_ID = R.layout.list_item_post;
@@ -23,6 +26,7 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
     private final TextView textViewPostTitle;
     private final TextView textViewPostSelfText;
     private final TextView textViewTimeAgo;
+    private final ImageView imageViewPostImage;
 
     FeedViewHolder(View itemView, ItemClickListener itemClickListener) {
         super(itemView);
@@ -35,13 +39,24 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
         textViewPostTitle = itemView.findViewById(R.id.textViewPostTitle);
         textViewPostSelfText = itemView.findViewById(R.id.textViewPostSelfText);
         textViewTimeAgo = itemView.findViewById(R.id.textViewTimeAgo);
+        imageViewPostImage = itemView.findViewById(R.id.imageViewPostImage);
     }
 
-    public void bind(Post post) {
+    public void bind(@NonNull Post post) {
         GlideApp
                 .with(imageViewIcon)
                 .load(post.getThumbnail())
                 .into(imageViewIcon);
+
+        if (StringUtils.isBlank(post.getPreviewImage())) {
+            imageViewPostImage.setVisibility(View.GONE);
+        } else {
+            imageViewPostImage.setVisibility(View.VISIBLE);
+            GlideApp
+                    .with(imageViewPostImage)
+                    .load(post.getPreviewImage())
+                    .into(imageViewPostImage);
+        }
 
         final String prefixedAuthorName = textViewUserName.getContext().getString(R.string.prefixed_author_name,
                 post.getAuthor());
