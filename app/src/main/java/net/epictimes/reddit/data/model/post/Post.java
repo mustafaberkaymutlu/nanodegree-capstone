@@ -33,7 +33,7 @@ public class Post {
     @Nullable
     private String headerImg;
 
-    @Nonnull
+    @Nullable
     private String thumbnail;
 
     @Nullable
@@ -133,12 +133,12 @@ public class Post {
         this.headerImg = headerImg;
     }
 
-    @Nonnull
+    @Nullable
     public String getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(@Nonnull String thumbnail) {
+    public void setThumbnail(@Nullable String thumbnail) {
         this.thumbnail = thumbnail;
     }
 
@@ -248,7 +248,7 @@ public class Post {
         }
 
         @Nonnull
-        public Builder withThumbnail(@Nonnull String thumbnail) {
+        public Builder withThumbnail(@Nullable String thumbnail) {
             this.thumbnail = thumbnail;
             return this;
         }

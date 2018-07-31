@@ -53,8 +53,8 @@ public class ListingMapper implements ObservableTransformer<ListingRaw, Listing>
     private void validateFields(final ListingRaw listingRaw) {
         final StringBuilder stringBuilder = new StringBuilder();
 
-        if (CollectionUtils.isEmpty(listingRaw.getChildren())) {
-            stringBuilder.append("children cannot be empty, ");
+        if (listingRaw.getChildren() == null) {
+            stringBuilder.append("children cannot be null, ");
         }
 
         final String message = stringBuilder.toString();

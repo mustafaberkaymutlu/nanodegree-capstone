@@ -115,10 +115,12 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
             buttonUrl.setOnClickListener(v -> openUrl(post.getUrl()));
         }
 
-        GlideApp
-                .with(this)
-                .load(post.getThumbnail())
-                .into(imageViewIcon);
+        if (post.getThumbnail() != null) {
+            GlideApp
+                    .with(this)
+                    .load(post.getThumbnail())
+                    .into(imageViewIcon);
+        }
 
         if (StringUtils.isBlank(post.getPreviewImage())) {
             imageViewPostImage.setVisibility(View.GONE);

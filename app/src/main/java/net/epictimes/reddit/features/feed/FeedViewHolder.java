@@ -46,10 +46,12 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(@NonNull Post post) {
-        GlideApp
-                .with(imageViewIcon)
-                .load(post.getThumbnail())
-                .into(imageViewIcon);
+        if (post.getThumbnail() != null) {
+            GlideApp
+                    .with(imageViewIcon)
+                    .load(post.getThumbnail())
+                    .into(imageViewIcon);
+        }
 
         if (StringUtils.isBlank(post.getPreviewImage())) {
             imageViewPostImage.setVisibility(View.GONE);

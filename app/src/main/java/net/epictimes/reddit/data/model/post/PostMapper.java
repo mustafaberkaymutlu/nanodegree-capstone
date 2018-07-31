@@ -1,6 +1,7 @@
 package net.epictimes.reddit.data.model.post;
 
 import android.support.annotation.NonNull;
+import android.util.Patterns;
 
 import net.epictimes.reddit.data.model.preview.Preview;
 import net.epictimes.reddit.data.model.preview.PreviewMapper;
@@ -43,6 +44,10 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
 
     @NonNull
     private Post buildPost(@NonNull PostRaw postRaw, @Nullable Preview preview) {
+        final String thumbnail = isValidUrl(postRaw.getThumbnail())
+                ? postRaw.getThumbnail()
+                : null;
+
         return new Post.Builder()
                 .withId(postRaw.getId())
                 .withAuthor(postRaw.getAuthor())
@@ -51,13 +56,17 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
                 .withSubreddit(postRaw.getSubreddit())
                 .withSubredditNamePrefixed(postRaw.getSubredditNamePrefixed())
                 .withHeaderImg(postRaw.getHeaderImg())
-                .withThumbnail(postRaw.getThumbnail())
+                .withThumbnail(thumbnail)
                 .withBannerImg(postRaw.getBannerImg())
                 .withCreatedUtc(postRaw.getCreatedUtc())
                 .withUrl(postRaw.getUrl())
                 .withDomain(postRaw.getDomain())
                 .withPreviewImage(getImageIfExists(preview))
                 .build();
+    }
+
+    private boolean isValidUrl(@NonNull String url) {
+        return StringUtils.isNotBlank(url) && Patterns.WEB_URL.matcher(url).matches();
     }
 
     private void validate(final PostRaw postRaw) {
