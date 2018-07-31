@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsClient;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
@@ -58,6 +59,7 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
 
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         imageViewIcon = findViewById(R.id.imageViewIcon);
         textViewUserName = findViewById(R.id.textViewUserName);
         textViewSubredditName = findViewById(R.id.textViewSubredditName);
@@ -68,6 +70,10 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         buttonUrl = findViewById(R.id.buttonUrl);
 
         imageViewPostImage.setOnClickListener(v -> viewModel.onImageClicked());
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     @Override
