@@ -1,5 +1,7 @@
 package net.epictimes.reddit.data.local.post;
 
+import android.support.annotation.NonNull;
+
 import net.epictimes.reddit.data.PostDataSource;
 import net.epictimes.reddit.data.model.listing.Listing;
 import net.epictimes.reddit.data.model.post.Post;
@@ -41,9 +43,21 @@ public class PostLocalDataSource implements PostDataSource {
     }
 
     @Override
-    public Maybe<Post> getPost(@Nonnull String postId) {
+    public Flowable<Post> getPost(@Nonnull String postId) {
         return postDao
                 .getPost(postId)
                 .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Completable savePost(@Nonnull Post post) {
+        return Completable
+                .fromAction(() -> postDao.insert(post))
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Completable vote(@NonNull String id, String voteDirection) {
+        throw new UnsupportedOperationException();
     }
 }

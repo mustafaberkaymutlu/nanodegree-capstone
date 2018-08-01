@@ -2,6 +2,8 @@ package net.epictimes.reddit.data.remote;
 
 import net.epictimes.reddit.data.model.login.AccessTokenResponse;
 
+import javax.annotation.Nonnull;
+
 import io.reactivex.Single;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -20,8 +22,8 @@ public interface AuthorizationServices {
 
     @FormUrlEncoded
     @POST("api/v1/access_token")
-    Single<AccessTokenResponse> accessToken(@Header("Authorization") String authorization,
-                                            @Field("grant_type") String grantType,
-                                            @Field("code") String code,
-                                            @Field("redirect_uri") String redirectUri);
+    Single<AccessTokenResponse> accessToken(@Nonnull @Header("Authorization") String authorization,
+                                            @Nonnull @Field("grant_type") String grantType,
+                                            @Nonnull @Field("code") String code,
+                                            @Nonnull @Field("redirect_uri") String redirectUri);
 }

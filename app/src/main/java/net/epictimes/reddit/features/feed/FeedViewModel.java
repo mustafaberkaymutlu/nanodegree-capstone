@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 
 import net.epictimes.reddit.data.model.post.Post;
 import net.epictimes.reddit.domain.login.IsUserLoggedIn;
-import net.epictimes.reddit.domain.posts.GetBestPosts;
+import net.epictimes.reddit.domain.posts.RetrieveBestPosts;
 import net.epictimes.reddit.features.BaseViewModel;
 import net.epictimes.reddit.features.LoadingViewEntity;
 import net.epictimes.reddit.features.SingleLiveEvent;
@@ -45,15 +45,15 @@ public class FeedViewModel extends BaseViewModel {
     private final AlertViewEntityMapper alertViewEntityMapper;
 
     @Nonnull
-    private final GetBestPosts getBestPosts;
+    private final RetrieveBestPosts retrieveBestPosts;
 
     @Inject
     FeedViewModel(@NonNull IsUserLoggedIn isUserLoggedIn,
                   @NonNull AlertViewEntityMapper alertViewEntityMapper,
-                  @NonNull GetBestPosts getBestPosts) {
+                  @NonNull RetrieveBestPosts retrieveBestPosts) {
         this.isUserLoggedIn = isUserLoggedIn;
         this.alertViewEntityMapper = alertViewEntityMapper;
-        this.getBestPosts = getBestPosts;
+        this.retrieveBestPosts = retrieveBestPosts;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class FeedViewModel extends BaseViewModel {
 
     @NonNull
     private Disposable getBestPostsBehaviourStream() {
-        return getBestPosts
+        return retrieveBestPosts
                 .getBehaviorStream(Option.none())
                 .doOnSubscribe(subscription -> postLoading(true))
                 .doOnNext(o -> postLoading(false))
@@ -93,8 +93,8 @@ public class FeedViewModel extends BaseViewModel {
 
     @NonNull
     private Disposable getBestPostsLoadMoreBehaviourStream(String after) {
-        return getBestPosts
-                .getBehaviorStream(Option.ofObj(new GetBestPosts.Params(after)))
+        return retrieveBestPosts
+                .getBehaviorStream(Option.ofObj(new RetrieveBestPosts.Params(after)))
                 .subscribe(listing -> viewEntityLiveData.postValue(new FeedViewEntity.Content(listing, true)),
                         this::showError);
     }

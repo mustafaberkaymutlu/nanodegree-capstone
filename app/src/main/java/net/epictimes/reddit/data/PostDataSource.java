@@ -1,5 +1,6 @@
 package net.epictimes.reddit.data;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import net.epictimes.reddit.data.model.listing.Listing;
@@ -11,7 +12,6 @@ import javax.annotation.Nonnull;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Maybe;
 
 public interface PostDataSource {
 
@@ -19,6 +19,10 @@ public interface PostDataSource {
 
     Completable savePosts(List<Post> posts);
 
-    Maybe<Post> getPost(@Nonnull String postId);
+    Flowable<Post> getPost(@Nonnull String postId);
+
+    Completable savePost(@Nonnull Post post);
+
+    Completable vote(@NonNull String id, String voteDirection);
 
 }

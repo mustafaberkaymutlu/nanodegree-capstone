@@ -196,7 +196,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintStart_toEndOf="@+id/textViewUpVoteCount"
                 app:layout_constraintTop_toTopOf="@+id/view"
-                app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
+                app:srcCompat="@drawable/ic_keyboard_arrow_down_gray_24dp" />
 
             <TextView
                 android:id="@+id/textViewUpVoteCount"

@@ -17,11 +17,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.marlonlom.utilities.timeago.TimeAgo;
 
 import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.model.post.Post;
+import net.epictimes.reddit.data.model.vote.Vote;
 import net.epictimes.reddit.features.BaseActivity;
 import net.epictimes.reddit.features.image_detail.ImageDetailActivity;
 import net.epictimes.reddit.util.GlideApp;
@@ -45,7 +47,7 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
     private ImageView imageViewPostImage;
     private Button buttonUrl;
     private TextView textViewUpVoteCount;
-    private ImageButton imageButtonUpvote;
+    private ImageButton imageButtonUpVote;
     private ImageButton imageButtonDownVote;
     private TextView textViewCommentCount;
 
@@ -74,16 +76,12 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         imageViewPostImage = findViewById(R.id.imageViewPostImage);
         buttonUrl = findViewById(R.id.buttonUrl);
         textViewUpVoteCount = findViewById(R.id.textViewUpVoteCount);
-        imageButtonUpvote = findViewById(R.id.imageButtonUpVote);
+        imageButtonUpVote = findViewById(R.id.imageButtonUpVote);
         imageButtonDownVote = findViewById(R.id.imageButtonDownVote);
         textViewCommentCount = findViewById(R.id.textViewCommentCount);
         final Button buttonShare = findViewById(R.id.buttonShare);
 
         imageViewPostImage.setOnClickListener(v -> viewModel.onImageClicked());
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> finish());
 
         buttonShare.setOnClickListener(v -> {
             final PostDetailViewEntity viewEntity = viewModel.viewEntityLiveData.getValue();
@@ -92,6 +90,13 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
                 share(viewEntity.getPost());
             }
         });
+
+        imageButtonUpVote.setOnClickListener(v -> viewModel.onUpVoteClicked());
+        imageButtonDownVote.setOnClickListener(v -> viewModel.onDownVoteClicked());
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     @Override
@@ -114,6 +119,7 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         viewModel.viewEntityLiveData.observe(this, this::updateView);
         viewModel.alertViewEntitySingleLiveEvent.observe(this, this::showAlert);
         viewModel.navigateToImageDetailEvent.observe(this, this::navigateToImageDetail);
+        viewModel.voteEvent.observe(this, this::displayVoteMessage);
     }
 
     private void updateView(@Nullable PostDetailViewEntity viewEntity) {
@@ -133,6 +139,8 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         textViewTimeAgo.setText(TimeAgo.using(post.getCreatedUtc() * 1000));
         textViewCommentCount.setText(String.valueOf(post.getCommentCount()));
         textViewUpVoteCount.setText(String.valueOf(post.getUpVoteCount()));
+
+        updateVoteButtons(post.getVote());
 
         final boolean isDomainNotSelf = !post.getDomain().equals("self." + post.getSubreddit());
         if (isDomainNotSelf) {
@@ -156,6 +164,23 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
                     .with(this)
                     .load(post.getPreviewImage())
                     .into(imageViewPostImage);
+        }
+    }
+
+    private void updateVoteButtons(@NonNull Vote vote) {
+        switch (vote) {
+            case UP:
+                imageButtonUpVote.setImageResource(R.drawable.ic_keyboard_arrow_up_green_24dp);
+                imageButtonDownVote.setImageResource(R.drawable.ic_keyboard_arrow_down_gray_24dp);
+                break;
+            case DOWN:
+                imageButtonUpVote.setImageResource(R.drawable.ic_keyboard_arrow_up_gray_24dp);
+                imageButtonDownVote.setImageResource(R.drawable.ic_keyboard_arrow_down_red_24dp);
+                break;
+            case NONE:
+                imageButtonUpVote.setImageResource(R.drawable.ic_keyboard_arrow_up_gray_24dp);
+                imageButtonDownVote.setImageResource(R.drawable.ic_keyboard_arrow_down_gray_24dp);
+                break;
         }
     }
 
@@ -192,5 +217,19 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         sendIntent.putExtra(Intent.EXTRA_TEXT, post.getUrl());
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_chooser_title)));
+    }
+
+    private void displayVoteMessage(Vote vote) {
+        switch (vote) {
+            case UP:
+                Toast.makeText(this, R.string.vote_up, Toast.LENGTH_SHORT).show();
+                break;
+            case DOWN:
+                Toast.makeText(this, R.string.vote_down, Toast.LENGTH_SHORT).show();
+                break;
+            case NONE:
+                Toast.makeText(this, R.string.vote_removed, Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 }

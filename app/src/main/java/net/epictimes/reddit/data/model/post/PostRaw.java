@@ -51,6 +51,12 @@ public class PostRaw {
     @SerializedName("ups")
     private Integer upVoteCount;
 
+    @SerializedName("downs")
+    private Integer downVoteCount;
+
+    @SerializedName("likes")
+    private Boolean likes;
+
     public String getId() {
         return id;
     }
@@ -109,5 +115,13 @@ public class PostRaw {
 
     public Integer getUpVoteCount() {
         return upVoteCount;
+    }
+
+    public Integer getDownVoteCount() {
+        return downVoteCount;
+    }
+
+    public Boolean getLikes() {
+        return likes;
     }
 }

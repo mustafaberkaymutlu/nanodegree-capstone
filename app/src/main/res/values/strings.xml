@@ -9,4 +9,7 @@
     <string name="go_to_link">Go to %s</string>
     <string name="share">Share</string>
     <string name="share_chooser_title">Share Url</string>
+    <string name="vote_up">Up voted!</string>
+    <string name="vote_down">Down voted!</string>
+    <string name="vote_removed">Removed vote!</string>
 </resources>

@@ -9,7 +9,7 @@ import net.epictimes.reddit.data.model.post.Post;
 
 import java.util.List;
 
-import io.reactivex.Maybe;
+import io.reactivex.Flowable;
 
 @Dao
 public interface PostDao {
@@ -17,7 +17,10 @@ public interface PostDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(List<Post> posts);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(Post post);
+
     @Query("SELECT * from Post where id = :postId")
-    Maybe<Post> getPost(String postId);
+    Flowable<Post> getPost(String postId);
 
 }

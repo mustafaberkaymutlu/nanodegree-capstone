@@ -13,13 +13,13 @@ import javax.inject.Inject;
 import io.reactivex.Flowable;
 import polanski.option.Option;
 
-public class GetPost implements Interactor.RetrieveInteractor<String, Post> {
+public class RetrievePost implements Interactor.RetrieveInteractor<String, Post> {
 
     @Nonnull
     private final PostRepository postRepository;
 
     @Inject
-    public GetPost(@Nonnull PostRepository postRepository) {
+    public RetrievePost(@Nonnull PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 

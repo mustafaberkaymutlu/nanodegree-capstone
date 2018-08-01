@@ -2,7 +2,11 @@ package net.epictimes.reddit.data.model.post;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
+
+import net.epictimes.reddit.data.local.VoteConverter;
+import net.epictimes.reddit.data.model.vote.Vote;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -55,6 +59,12 @@ public class Post {
 
     private int upVoteCount;
 
+    private int downVoteCount;
+
+    @TypeConverters(VoteConverter.class)
+    @Nonnull
+    private Vote vote;
+
     public Post() {
     }
 
@@ -74,6 +84,8 @@ public class Post {
         previewImage = builder.previewImage;
         commentCount = builder.commentCount;
         upVoteCount = builder.upVoteCount;
+        downVoteCount = builder.downVoteCount;
+        vote = builder.vote;
     }
 
     @Nonnull
@@ -205,8 +217,25 @@ public class Post {
         return upVoteCount;
     }
 
+    public int getDownVoteCount() {
+        return downVoteCount;
+    }
+
+    public void setDownVoteCount(int downVoteCount) {
+        this.downVoteCount = downVoteCount;
+    }
+
     public void setUpVoteCount(int upVoteCount) {
         this.upVoteCount = upVoteCount;
+    }
+
+    @Nonnull
+    public Vote getVote() {
+        return vote;
+    }
+
+    public void setVote(@Nonnull Vote vote) {
+        this.vote = vote;
     }
 
     public static final class Builder {
@@ -225,6 +254,8 @@ public class Post {
         private String previewImage;
         private int commentCount;
         private int upVoteCount;
+        private int downVoteCount;
+        private Vote vote;
 
         public Builder() {
         }
@@ -316,6 +347,18 @@ public class Post {
         @Nonnull
         public Builder withUpVoteCount(int upVoteCount) {
             this.upVoteCount = upVoteCount;
+            return this;
+        }
+
+        @Nonnull
+        public Builder withDownVoteCount(int downVoteCount) {
+            this.downVoteCount = downVoteCount;
+            return this;
+        }
+
+        @Nonnull
+        public Builder withLikes(@NonNull Vote vote) {
+            this.vote = vote;
             return this;
         }
 

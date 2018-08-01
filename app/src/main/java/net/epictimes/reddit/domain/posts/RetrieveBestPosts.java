@@ -13,13 +13,13 @@ import javax.inject.Inject;
 import io.reactivex.Flowable;
 import polanski.option.Option;
 
-public class GetBestPosts implements Interactor.RetrieveInteractor<GetBestPosts.Params, Listing> {
+public class RetrieveBestPosts implements Interactor.RetrieveInteractor<RetrieveBestPosts.Params, Listing> {
 
     @Nonnull
     private final PostRepository postRepository;
 
     @Inject
-    public GetBestPosts(@Nonnull PostRepository postRepository) {
+    public RetrieveBestPosts(@Nonnull PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 

@@ -19,7 +19,7 @@ import javax.inject.Singleton;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 @RemoteDataSource
@@ -55,7 +55,25 @@ public class PostRemoteDataSource implements PostDataSource {
     }
 
     @Override
-    public Maybe<Post> getPost(@Nonnull String postId) {
+    public Flowable<Post> getPost(@Nonnull String postId) {
+        return services
+                .getPost("t3_" + postId)
+                .subscribeOn(Schedulers.io())
+                .map(ListingResponse::getData)
+                .compose(listingMapper)
+                .map(listing -> listing.getChildren().get(0))
+                .toFlowable(BackpressureStrategy.ERROR);
+    }
+
+    @Override
+    public Completable savePost(@Nonnull Post post) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Completable vote(@NonNull String id, String voteDirection) {
+        return services
+                .vote(id, "2", voteDirection)
+                .subscribeOn(Schedulers.io());
     }
 }

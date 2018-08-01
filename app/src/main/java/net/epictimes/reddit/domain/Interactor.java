@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import javax.annotation.Nonnull;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import polanski.option.Option;
@@ -12,12 +13,12 @@ public interface Interactor extends UseCase {
 
     /**
      * Sends changes to data layer.
-     * Returns a {@link Single} that will emit the result of the send operation.
+     * Returns a {@link Completable} that will complete or error depending on the result of the send operation.
      */
-    interface SendInteractor<Params, Result> extends Interactor {
+    interface SendInteractor<Params> extends Interactor {
 
         @NonNull
-        Single<Result> getSingle(@Nonnull final Option<Params> params);
+        Completable getCompletable(@Nonnull final Option<Params> params);
 
     }
 

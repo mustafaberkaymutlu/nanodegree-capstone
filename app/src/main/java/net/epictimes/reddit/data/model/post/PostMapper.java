@@ -5,6 +5,7 @@ import android.util.Patterns;
 
 import net.epictimes.reddit.data.model.preview.Preview;
 import net.epictimes.reddit.data.model.preview.PreviewMapper;
+import net.epictimes.reddit.data.model.vote.Vote;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -64,6 +65,8 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
                 .withPreviewImage(getImageIfExists(preview))
                 .withCommentCount(postRaw.getCommentCount())
                 .withUpVoteCount(postRaw.getUpVoteCount())
+                .withDownVoteCount(postRaw.getDownVoteCount())
+                .withLikes(mapToVote(postRaw.getLikes()))
                 .build();
     }
 
@@ -91,19 +94,23 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
         }
 
         if (postRaw.getCreatedUtc() == null) {
-            stringBuilder.append("created_utc cannot be empty. ");
+            stringBuilder.append("created_utc cannot be empty, ");
         }
 
         if (postRaw.getDomain() == null) {
-            stringBuilder.append("domain cannot be empty. ");
+            stringBuilder.append("domain cannot be empty, ");
         }
 
         if (postRaw.getCommentCount() == null) {
-            stringBuilder.append("num_comments cannot be empty. ");
+            stringBuilder.append("num_comments cannot be empty, ");
         }
 
         if (postRaw.getUpVoteCount() == null) {
-            stringBuilder.append("ups cannot be empty. ");
+            stringBuilder.append("ups cannot be empty, ");
+        }
+
+        if (postRaw.getDownVoteCount() == null) {
+            stringBuilder.append("downs cannot be empty. ");
         }
 
         final String message = stringBuilder.toString();
@@ -117,5 +124,11 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
         if (preview == null) return null;
         if (CollectionUtils.isEmpty(preview.getImages())) return null;
         return preview.getImages().get(0).getSource().getUrl();
+    }
+
+    private Vote mapToVote(@Nullable Boolean likes) {
+        if (likes == null) return Vote.NONE;
+        if (likes) return Vote.UP;
+        return Vote.DOWN;
     }
 }
