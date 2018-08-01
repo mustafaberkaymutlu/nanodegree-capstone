@@ -7,4 +7,6 @@
 
     <string name="prefixed_author_name">u/%s</string>
     <string name="go_to_link">Go to %s</string>
+    <string name="share">Share</string>
+    <string name="share_chooser_title">Share Url</string>
 </resources>

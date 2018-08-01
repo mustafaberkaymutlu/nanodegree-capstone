@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,6 +44,11 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
     private TextView textViewTimeAgo;
     private ImageView imageViewPostImage;
     private Button buttonUrl;
+    private TextView textViewVoteCount;
+    private ImageButton imageButtonUpvote;
+    private ImageButton imageButtonDownVote;
+    private TextView textViewCommentCount;
+    private Button buttonShare;
 
     private CustomTabsServiceConnection customTabsServiceConnection;
 
@@ -68,12 +74,25 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         textViewTimeAgo = findViewById(R.id.textViewTimeAgo);
         imageViewPostImage = findViewById(R.id.imageViewPostImage);
         buttonUrl = findViewById(R.id.buttonUrl);
+        textViewVoteCount = findViewById(R.id.textViewVoteCount);
+        imageButtonUpvote = findViewById(R.id.imageButtonUpVote);
+        imageButtonDownVote = findViewById(R.id.imageButtonDownVote);
+        textViewCommentCount = findViewById(R.id.textViewCommentCount);
+        buttonShare = findViewById(R.id.buttonShare);
 
         imageViewPostImage.setOnClickListener(v -> viewModel.onImageClicked());
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> finish());
+
+        buttonShare.setOnClickListener(v -> {
+            final PostDetailViewEntity viewEntity = viewModel.viewEntityLiveData.getValue();
+
+            if (viewEntity != null) {
+                share(viewEntity.getPost());
+            }
+        });
     }
 
     @Override
@@ -164,5 +183,13 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
 
         final Intent imageDetailIntent = ImageDetailActivity.newIntent(this, url);
         startActivity(imageDetailIntent);
+    }
+
+    private void share(@NonNull Post post) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, post.getUrl());
+        sendIntent.setType("text/plain");
+        startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_chooser_title)));
     }
 }
