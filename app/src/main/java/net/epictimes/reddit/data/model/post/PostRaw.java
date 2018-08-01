@@ -45,6 +45,9 @@ public class PostRaw {
     @SerializedName("preview")
     private PreviewRaw previewRaw;
 
+    @SerializedName("num_comments")
+    private Integer commentCount;
+
     public String getId() {
         return id;
     }
@@ -95,5 +98,9 @@ public class PostRaw {
 
     public PreviewRaw getPreviewRaw() {
         return previewRaw;
+    }
+
+    public Integer getCommentCount() {
+        return commentCount;
     }
 }

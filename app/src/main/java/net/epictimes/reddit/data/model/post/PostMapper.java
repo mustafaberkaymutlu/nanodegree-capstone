@@ -62,6 +62,7 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
                 .withUrl(postRaw.getUrl())
                 .withDomain(postRaw.getDomain())
                 .withPreviewImage(getImageIfExists(preview))
+                .withCommentCount(postRaw.getCommentCount())
                 .build();
     }
 
@@ -85,15 +86,19 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
         }
 
         if (StringUtils.isBlank(postRaw.getSubredditNamePrefixed())) {
-            stringBuilder.append("displayNamePrefixed cannot be empty, ");
+            stringBuilder.append("subreddit_name_prefixed cannot be empty, ");
         }
 
         if (postRaw.getCreatedUtc() == null) {
-            stringBuilder.append("createdUtc cannot be empty. ");
+            stringBuilder.append("created_utc cannot be empty. ");
         }
 
         if (postRaw.getDomain() == null) {
             stringBuilder.append("domain cannot be empty. ");
+        }
+
+        if (postRaw.getCommentCount() == null) {
+            stringBuilder.append("num_comments cannot be empty. ");
         }
 
         final String message = stringBuilder.toString();

@@ -132,6 +132,7 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         textViewPostTitle.setText(Html.fromHtml(post.getTitle()));
         textViewPostSelfText.setText(post.getSelfText());
         textViewTimeAgo.setText(TimeAgo.using(post.getCreatedUtc() * 1000));
+        textViewCommentCount.setText(String.valueOf(post.getCommentCount()));
 
         final boolean isDomainNotSelf = !post.getDomain().equals("self." + post.getSubreddit());
         if (isDomainNotSelf) {

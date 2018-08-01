@@ -51,6 +51,8 @@ public class Post {
     @Nullable
     private String previewImage;
 
+    private int commentCount;
+
     public Post() {
     }
 
@@ -68,6 +70,7 @@ public class Post {
         url = builder.url;
         domain = builder.domain;
         previewImage = builder.previewImage;
+        commentCount = builder.commentCount;
     }
 
     @Nonnull
@@ -187,6 +190,14 @@ public class Post {
         this.previewImage = previewImage;
     }
 
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+
     public static final class Builder {
         private String id;
         private String author;
@@ -201,6 +212,7 @@ public class Post {
         private String url;
         private String domain;
         private String previewImage;
+        private int commentCount;
 
         public Builder() {
         }
@@ -280,6 +292,11 @@ public class Post {
         @Nonnull
         public Builder withPreviewImage(@Nullable String previewImage) {
             this.previewImage = previewImage;
+            return this;
+        }
+        @Nonnull
+        public Builder withCommentCount(int commentCount) {
+            this.commentCount = commentCount;
             return this;
         }
 
