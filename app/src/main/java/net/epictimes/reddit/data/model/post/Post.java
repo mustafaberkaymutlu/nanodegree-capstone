@@ -53,6 +53,8 @@ public class Post {
 
     private int commentCount;
 
+    private int upVoteCount;
+
     public Post() {
     }
 
@@ -71,6 +73,7 @@ public class Post {
         domain = builder.domain;
         previewImage = builder.previewImage;
         commentCount = builder.commentCount;
+        upVoteCount = builder.upVoteCount;
     }
 
     @Nonnull
@@ -198,6 +201,14 @@ public class Post {
         this.commentCount = commentCount;
     }
 
+    public int getUpVoteCount() {
+        return upVoteCount;
+    }
+
+    public void setUpVoteCount(int upVoteCount) {
+        this.upVoteCount = upVoteCount;
+    }
+
     public static final class Builder {
         private String id;
         private String author;
@@ -213,6 +224,7 @@ public class Post {
         private String domain;
         private String previewImage;
         private int commentCount;
+        private int upVoteCount;
 
         public Builder() {
         }
@@ -294,9 +306,16 @@ public class Post {
             this.previewImage = previewImage;
             return this;
         }
+
         @Nonnull
         public Builder withCommentCount(int commentCount) {
             this.commentCount = commentCount;
+            return this;
+        }
+
+        @Nonnull
+        public Builder withUpVoteCount(int upVoteCount) {
+            this.upVoteCount = upVoteCount;
             return this;
         }
 

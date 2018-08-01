@@ -194,12 +194,12 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
-                app:layout_constraintStart_toEndOf="@+id/textViewVoteCount"
+                app:layout_constraintStart_toEndOf="@+id/textViewUpVoteCount"
                 app:layout_constraintTop_toTopOf="@+id/view"
                 app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
 
             <TextView
-                android:id="@+id/textViewVoteCount"
+                android:id="@+id/textViewUpVoteCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"

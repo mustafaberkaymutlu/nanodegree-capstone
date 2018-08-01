@@ -44,11 +44,10 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
     private TextView textViewTimeAgo;
     private ImageView imageViewPostImage;
     private Button buttonUrl;
-    private TextView textViewVoteCount;
+    private TextView textViewUpVoteCount;
     private ImageButton imageButtonUpvote;
     private ImageButton imageButtonDownVote;
     private TextView textViewCommentCount;
-    private Button buttonShare;
 
     private CustomTabsServiceConnection customTabsServiceConnection;
 
@@ -74,11 +73,11 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         textViewTimeAgo = findViewById(R.id.textViewTimeAgo);
         imageViewPostImage = findViewById(R.id.imageViewPostImage);
         buttonUrl = findViewById(R.id.buttonUrl);
-        textViewVoteCount = findViewById(R.id.textViewVoteCount);
+        textViewUpVoteCount = findViewById(R.id.textViewUpVoteCount);
         imageButtonUpvote = findViewById(R.id.imageButtonUpVote);
         imageButtonDownVote = findViewById(R.id.imageButtonDownVote);
         textViewCommentCount = findViewById(R.id.textViewCommentCount);
-        buttonShare = findViewById(R.id.buttonShare);
+        final Button buttonShare = findViewById(R.id.buttonShare);
 
         imageViewPostImage.setOnClickListener(v -> viewModel.onImageClicked());
 
@@ -133,6 +132,7 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         textViewPostSelfText.setText(post.getSelfText());
         textViewTimeAgo.setText(TimeAgo.using(post.getCreatedUtc() * 1000));
         textViewCommentCount.setText(String.valueOf(post.getCommentCount()));
+        textViewUpVoteCount.setText(String.valueOf(post.getUpVoteCount()));
 
         final boolean isDomainNotSelf = !post.getDomain().equals("self." + post.getSubreddit());
         if (isDomainNotSelf) {

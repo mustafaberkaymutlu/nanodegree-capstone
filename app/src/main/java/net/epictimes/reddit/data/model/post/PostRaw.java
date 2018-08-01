@@ -48,6 +48,9 @@ public class PostRaw {
     @SerializedName("num_comments")
     private Integer commentCount;
 
+    @SerializedName("ups")
+    private Integer upVoteCount;
+
     public String getId() {
         return id;
     }
@@ -102,5 +105,9 @@ public class PostRaw {
 
     public Integer getCommentCount() {
         return commentCount;
+    }
+
+    public Integer getUpVoteCount() {
+        return upVoteCount;
     }
 }

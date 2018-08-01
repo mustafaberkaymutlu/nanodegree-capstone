@@ -63,6 +63,7 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
                 .withDomain(postRaw.getDomain())
                 .withPreviewImage(getImageIfExists(preview))
                 .withCommentCount(postRaw.getCommentCount())
+                .withUpVoteCount(postRaw.getUpVoteCount())
                 .build();
     }
 
@@ -99,6 +100,10 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
 
         if (postRaw.getCommentCount() == null) {
             stringBuilder.append("num_comments cannot be empty. ");
+        }
+
+        if (postRaw.getUpVoteCount() == null) {
+            stringBuilder.append("ups cannot be empty. ");
         }
 
         final String message = stringBuilder.toString();
