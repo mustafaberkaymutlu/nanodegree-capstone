@@ -2,6 +2,7 @@ package net.epictimes.reddit.data.model.post;
 
 import com.google.gson.annotations.SerializedName;
 
+import net.epictimes.reddit.data.model.media.MediaRaw;
 import net.epictimes.reddit.data.model.preview.PreviewRaw;
 
 public class PostRaw {
@@ -56,6 +57,12 @@ public class PostRaw {
 
     @SerializedName("likes")
     private Boolean likes;
+
+    @SerializedName("is_video")
+    private Boolean isVideo;
+
+    @SerializedName("media")
+    private MediaRaw mediaRaw;
 
     public String getId() {
         return id;
@@ -123,5 +130,13 @@ public class PostRaw {
 
     public Boolean getLikes() {
         return likes;
+    }
+
+    public Boolean isVideo() {
+        return isVideo;
+    }
+
+    public MediaRaw getMediaRaw() {
+        return mediaRaw;
     }
 }

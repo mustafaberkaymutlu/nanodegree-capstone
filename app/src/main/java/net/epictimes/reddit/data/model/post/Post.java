@@ -65,6 +65,11 @@ public class Post {
     @Nonnull
     private Vote vote;
 
+    private boolean isVideo;
+
+    @Nullable
+    private String videoUrl;
+
     public Post() {
     }
 
@@ -86,6 +91,8 @@ public class Post {
         upVoteCount = builder.upVoteCount;
         downVoteCount = builder.downVoteCount;
         vote = builder.vote;
+        isVideo = builder.isVideo;
+        videoUrl = builder.videoUrl;
     }
 
     @Nonnull
@@ -238,6 +245,23 @@ public class Post {
         this.vote = vote;
     }
 
+    public boolean isVideo() {
+        return isVideo;
+    }
+
+    public void setVideo(boolean video) {
+        isVideo = video;
+    }
+
+    @Nullable
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(@Nullable String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
     public static final class Builder {
         private String id;
         private String author;
@@ -256,6 +280,8 @@ public class Post {
         private int upVoteCount;
         private int downVoteCount;
         private Vote vote;
+        private boolean isVideo;
+        private String videoUrl;
 
         public Builder() {
         }
@@ -359,6 +385,18 @@ public class Post {
         @Nonnull
         public Builder withLikes(@NonNull Vote vote) {
             this.vote = vote;
+            return this;
+        }
+
+        @Nonnull
+        public Builder withIsVideo(boolean isVideo) {
+            this.isVideo = isVideo;
+            return this;
+        }
+
+        @Nonnull
+        public Builder withVideoUrl(@Nullable String videoUrl) {
+            this.videoUrl = videoUrl;
             return this;
         }
 

@@ -3,6 +3,8 @@ package net.epictimes.reddit.data.model.post;
 import android.support.annotation.NonNull;
 import android.util.Patterns;
 
+import net.epictimes.reddit.data.model.media.Media;
+import net.epictimes.reddit.data.model.media.MediaMapper;
 import net.epictimes.reddit.data.model.preview.Preview;
 import net.epictimes.reddit.data.model.preview.PreviewMapper;
 import net.epictimes.reddit.data.model.vote.Vote;
@@ -19,11 +21,16 @@ import io.reactivex.ObservableTransformer;
 
 public class PostMapper implements ObservableTransformer<PostRaw, Post> {
 
+    @NonNull
     private final PreviewMapper previewMapper;
 
+    @NonNull
+    private final MediaMapper mediaMapper;
+
     @Inject
-    PostMapper(PreviewMapper previewMapper) {
+    PostMapper(@NonNull PreviewMapper previewMapper, @NonNull MediaMapper mediaMapper) {
         this.previewMapper = previewMapper;
+        this.mediaMapper = mediaMapper;
     }
 
     @Override
@@ -31,20 +38,39 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
         return upstream
                 .doOnNext(this::validate)
                 .flatMap(postRaw -> {
+                    final Observable<Post.Builder> builder = Observable.just(buildPost(postRaw));
+
+                    final Observable<Post.Builder> withPreview;
                     if (postRaw.getPreviewRaw() == null) {
-                        return Observable
-                                .just(buildPost(postRaw, null));
+                        withPreview = builder;
                     } else {
-                        return Observable
+                        withPreview = Observable
                                 .just(postRaw.getPreviewRaw())
                                 .compose(previewMapper)
-                                .map(preview -> buildPost(postRaw, preview));
+                                .flatMap(preview ->
+                                        builder.map(builder12 ->
+                                                builder12.withPreviewImage(getImageIfExists(preview))));
                     }
-                });
+
+                    final Observable<Post.Builder> withVideo;
+                    if (postRaw.getMediaRaw() == null) {
+                        withVideo = withPreview;
+                    } else {
+                        withVideo = Observable
+                                .just(postRaw.getMediaRaw())
+                                .compose(mediaMapper)
+                                .flatMap(media ->
+                                        withPreview.map(builder1 ->
+                                                builder1.withVideoUrl(getVideoIfExists(media))));
+                    }
+
+                    return withVideo;
+                })
+                .map(Post.Builder::build);
     }
 
     @NonNull
-    private Post buildPost(@NonNull PostRaw postRaw, @Nullable Preview preview) {
+    private Post.Builder buildPost(@NonNull PostRaw postRaw) {
         final String thumbnail = isValidUrl(postRaw.getThumbnail())
                 ? postRaw.getThumbnail()
                 : null;
@@ -62,12 +88,12 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
                 .withCreatedUtc(postRaw.getCreatedUtc())
                 .withUrl(postRaw.getUrl())
                 .withDomain(postRaw.getDomain())
-                .withPreviewImage(getImageIfExists(preview))
+//                .withPreviewImage(getImageIfExists(preview))
                 .withCommentCount(postRaw.getCommentCount())
                 .withUpVoteCount(postRaw.getUpVoteCount())
                 .withDownVoteCount(postRaw.getDownVoteCount())
                 .withLikes(mapToVote(postRaw.getLikes()))
-                .build();
+                .withIsVideo(postRaw.isVideo());
     }
 
     private boolean isValidUrl(@NonNull String url) {
@@ -113,6 +139,10 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
             stringBuilder.append("downs cannot be empty. ");
         }
 
+        if (postRaw.isVideo() == null) {
+            stringBuilder.append("is_video cannot be empty. ");
+        }
+
         final String message = stringBuilder.toString();
         if (StringUtils.isNotBlank(message)) {
             throw new IllegalStateException(message);
@@ -124,6 +154,13 @@ public class PostMapper implements ObservableTransformer<PostRaw, Post> {
         if (preview == null) return null;
         if (CollectionUtils.isEmpty(preview.getImages())) return null;
         return preview.getImages().get(0).getSource().getUrl();
+    }
+
+    @Nullable
+    private String getVideoIfExists(@Nullable Media media) {
+        if (media == null) return null;
+        if (media.getRedditVideo() == null) return null;
+        return media.getRedditVideo().getHlsUrl();
     }
 
     private Vote mapToVote(@Nullable Boolean likes) {
