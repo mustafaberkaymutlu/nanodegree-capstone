@@ -12,4 +12,5 @@
     <string name="vote_up">Up voted!</string>
     <string name="vote_down">Down voted!</string>
     <string name="vote_removed">Removed vote!</string>
+    <string name="play">Play</string>
 </resources>

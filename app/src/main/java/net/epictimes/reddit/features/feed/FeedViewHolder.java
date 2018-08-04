@@ -27,6 +27,7 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
     private final TextView textViewPostSelfText;
     private final TextView textViewTimeAgo;
     private final ImageView imageViewPostImage;
+    private final ImageView imageViewPlay;
 
     FeedViewHolder(View itemView,
                    ItemClickListener postClickListener,
@@ -40,6 +41,7 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
         textViewPostSelfText = itemView.findViewById(R.id.textViewPostSelfText);
         textViewTimeAgo = itemView.findViewById(R.id.textViewTimeAgo);
         imageViewPostImage = itemView.findViewById(R.id.imageViewPostImage);
+        imageViewPlay = itemView.findViewById(R.id.imageViewPlay);
 
         imageViewPostImage.setOnClickListener(v -> imageClickListener.onItemClicked(getAdapterPosition()));
         itemView.setOnClickListener(v -> postClickListener.onItemClicked(getAdapterPosition()));
@@ -55,12 +57,19 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
 
         if (StringUtils.isBlank(post.getPreviewImage())) {
             imageViewPostImage.setVisibility(View.GONE);
+            imageViewPlay.setVisibility(View.GONE);
         } else {
             imageViewPostImage.setVisibility(View.VISIBLE);
             GlideApp
                     .with(imageViewPostImage)
                     .load(post.getPreviewImage())
                     .into(imageViewPostImage);
+
+            if (post.isVideo()) {
+                imageViewPlay.setVisibility(View.VISIBLE);
+            } else {
+                imageViewPlay.setVisibility(View.GONE);
+            }
         }
 
         final String prefixedAuthorName = textViewUserName.getContext().getString(R.string.prefixed_author_name,

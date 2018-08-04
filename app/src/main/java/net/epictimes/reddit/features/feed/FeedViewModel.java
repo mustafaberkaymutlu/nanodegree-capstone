@@ -39,6 +39,9 @@ public class FeedViewModel extends BaseViewModel {
     final SingleLiveEvent<String> navigateToImageDetailEvent = new SingleLiveEvent<>();
 
     @Nonnull
+    final SingleLiveEvent<String> navigateToVideoDetailEvent = new SingleLiveEvent<>();
+
+    @Nonnull
     private final IsUserLoggedIn isUserLoggedIn;
 
     @Nonnull
@@ -121,7 +124,11 @@ public class FeedViewModel extends BaseViewModel {
         navigateToPostDetailEvent.setValue(post.getId());
     }
 
-    public void onImageClicked(Post post) {
-        navigateToImageDetailEvent.setValue(post.getPreviewImage());
+    public void onImageClicked(@Nonnull Post post) {
+        if (post.isVideo()) {
+            navigateToVideoDetailEvent.setValue(post.getVideoUrl());
+        } else {
+            navigateToImageDetailEvent.setValue(post.getPreviewImage());
+        }
     }
 }

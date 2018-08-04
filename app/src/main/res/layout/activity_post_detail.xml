@@ -205,17 +205,33 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                tools:text="1k"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintStart_toEndOf="@+id/imageButtonUpVote"
-                app:layout_constraintTop_toTopOf="@+id/view" />
+                app:layout_constraintTop_toTopOf="@+id/view"
+                tools:text="1k" />
 
             <android.support.constraint.Group
                 android:id="@+id/group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/imageViewPlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@string/play"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewPostImage"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewPostImage"
+                app:layout_constraintStart_toStartOf="@+id/imageViewPostImage"
+                app:layout_constraintTop_toTopOf="@+id/imageViewPostImage"
+                app:srcCompat="@drawable/ic_play_circle_filled_white_48dp"
+                tools:visibility="visible" />
 
         </android.support.constraint.ConstraintLayout>
 

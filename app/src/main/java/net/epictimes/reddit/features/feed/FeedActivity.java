@@ -13,9 +13,10 @@ import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.model.listing.Listing;
 import net.epictimes.reddit.features.BaseActivity;
 import net.epictimes.reddit.features.LoadingViewEntity;
-import net.epictimes.reddit.features.post_detail.PostDetailActivity;
 import net.epictimes.reddit.features.image_detail.ImageDetailActivity;
 import net.epictimes.reddit.features.login.LoginActivity;
+import net.epictimes.reddit.features.post_detail.PostDetailActivity;
+import net.epictimes.reddit.features.video_detail.VideoDetailActivity;
 import net.epictimes.reddit.util.EndlessRecyclerViewScrollListener;
 import net.epictimes.reddit.util.Preconditions;
 
@@ -45,6 +46,7 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
         viewModel.loadingLiveData.observe(this, this::updateLoading);
         viewModel.navigateToPostDetailEvent.observe(this, this::navigateToPostDetail);
         viewModel.navigateToImageDetailEvent.observe(this, this::navigateToImageDetail);
+        viewModel.navigateToVideoDetailEvent.observe(this, this::navigateToVideoDetail);
     }
 
     @Override
@@ -118,5 +120,12 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
 
         final Intent imageDetailIntent = ImageDetailActivity.newIntent(this, url);
         startActivity(imageDetailIntent);
+    }
+
+    private void navigateToVideoDetail(@Nullable String videoUrl) {
+        if (videoUrl == null) return;
+
+        final Intent videoDetailIntent = VideoDetailActivity.newIntent(this, videoUrl);
+        startActivity(videoDetailIntent);
     }
 }

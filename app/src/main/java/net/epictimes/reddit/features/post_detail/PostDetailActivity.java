@@ -26,6 +26,7 @@ import net.epictimes.reddit.data.model.post.Post;
 import net.epictimes.reddit.data.model.vote.Vote;
 import net.epictimes.reddit.features.BaseActivity;
 import net.epictimes.reddit.features.image_detail.ImageDetailActivity;
+import net.epictimes.reddit.features.video_detail.VideoDetailActivity;
 import net.epictimes.reddit.util.GlideApp;
 import net.epictimes.reddit.util.Preconditions;
 
@@ -45,6 +46,7 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
     private TextView textViewPostSelfText;
     private TextView textViewTimeAgo;
     private ImageView imageViewPostImage;
+    private ImageView imageViewPlay;
     private Button buttonUrl;
     private TextView textViewUpVoteCount;
     private ImageButton imageButtonUpVote;
@@ -74,6 +76,7 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         textViewPostSelfText = findViewById(R.id.textViewPostSelfText);
         textViewTimeAgo = findViewById(R.id.textViewTimeAgo);
         imageViewPostImage = findViewById(R.id.imageViewPostImage);
+        imageViewPlay = findViewById(R.id.imageViewPlay);
         buttonUrl = findViewById(R.id.buttonUrl);
         textViewUpVoteCount = findViewById(R.id.textViewUpVoteCount);
         imageButtonUpVote = findViewById(R.id.imageButtonUpVote);
@@ -119,6 +122,7 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
         viewModel.viewEntityLiveData.observe(this, this::updateView);
         viewModel.alertViewEntitySingleLiveEvent.observe(this, this::showAlert);
         viewModel.navigateToImageDetailEvent.observe(this, this::navigateToImageDetail);
+        viewModel.navigateToVideoDetailEvent.observe(this, this::navigateToVideoDetail);
         viewModel.voteEvent.observe(this, this::displayVoteMessage);
     }
 
@@ -158,12 +162,19 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
 
         if (StringUtils.isBlank(post.getPreviewImage())) {
             imageViewPostImage.setVisibility(View.GONE);
+            imageViewPlay.setVisibility(View.GONE);
         } else {
             imageViewPostImage.setVisibility(View.VISIBLE);
             GlideApp
                     .with(this)
                     .load(post.getPreviewImage())
                     .into(imageViewPostImage);
+
+            if (post.isVideo()) {
+                imageViewPlay.setVisibility(View.VISIBLE);
+            } else {
+                imageViewPlay.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -209,6 +220,13 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
 
         final Intent imageDetailIntent = ImageDetailActivity.newIntent(this, url);
         startActivity(imageDetailIntent);
+    }
+
+    private void navigateToVideoDetail(@Nullable String videoUrl) {
+        if (videoUrl == null) return;
+
+        final Intent videoDetailIntent = VideoDetailActivity.newIntent(this, videoUrl);
+        startActivity(videoDetailIntent);
     }
 
     private void share(@NonNull Post post) {

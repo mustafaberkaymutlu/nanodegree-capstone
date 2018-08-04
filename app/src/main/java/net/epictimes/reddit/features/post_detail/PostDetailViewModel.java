@@ -34,6 +34,9 @@ public class PostDetailViewModel extends BaseViewModel {
     final SingleLiveEvent<String> navigateToImageDetailEvent = new SingleLiveEvent<>();
 
     @Nonnull
+    final SingleLiveEvent<String> navigateToVideoDetailEvent = new SingleLiveEvent<>();
+
+    @Nonnull
     final SingleLiveEvent<Vote> voteEvent = new SingleLiveEvent<>();
 
     @Nonnull
@@ -87,8 +90,13 @@ public class PostDetailViewModel extends BaseViewModel {
         final PostDetailViewEntity viewEntity = viewEntityLiveData.getValue();
 
         if (viewEntity != null) {
-            final String imageUrl = viewEntity.getPost().getPreviewImage();
-            navigateToImageDetailEvent.setValue(imageUrl);
+            final Post post = viewEntity.getPost();
+
+            if (post.isVideo()) {
+                navigateToVideoDetailEvent.setValue(post.getVideoUrl());
+            } else {
+                navigateToImageDetailEvent.setValue(post.getPreviewImage());
+            }
         }
     }
 
