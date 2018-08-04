@@ -26,14 +26,21 @@ class FeedRecyclerViewAdapter extends RecyclerView.Adapter<FeedViewHolder> {
     private PostClickListener postClickListener;
 
     @Nullable
-    private ImageClickListener imageClickListener;
+    private PostImageClickListener postImageClickListener;
+
+    @Nullable
+    private SubredditClickListener subredditClickListener;
 
     interface PostClickListener {
         void onPostClicked(@Nonnull Post post);
     }
 
-    interface ImageClickListener {
-        void onImageClicked(@Nonnull Post post);
+    interface PostImageClickListener {
+        void onPostImageClicked(@Nonnull Post post);
+    }
+
+    interface SubredditClickListener {
+        void onSubredditImageClicked(@Nonnull Post post);
     }
 
     @NonNull
@@ -46,12 +53,17 @@ class FeedRecyclerViewAdapter extends RecyclerView.Adapter<FeedViewHolder> {
                 postClickListener.onPostClicked(postList.get(position));
             }
         };
-        final ItemClickListener imageItemClickListener = (position) -> {
-            if (imageClickListener != null) {
-                imageClickListener.onImageClicked(postList.get(position));
+        final ItemClickListener postImageItemClickListener = (position) -> {
+            if (postImageClickListener != null) {
+                postImageClickListener.onPostImageClicked(postList.get(position));
             }
         };
-        return new FeedViewHolder(view, postItemClickListener, imageItemClickListener);
+        final ItemClickListener subredditItemClickListener = (position) -> {
+            if (subredditClickListener != null) {
+                subredditClickListener.onSubredditImageClicked(postList.get(position));
+            }
+        };
+        return new FeedViewHolder(view, postItemClickListener, postImageItemClickListener, subredditItemClickListener);
     }
 
     @Override
@@ -95,7 +107,11 @@ class FeedRecyclerViewAdapter extends RecyclerView.Adapter<FeedViewHolder> {
         this.postClickListener = postClickListener;
     }
 
-    public void setImageClickListener(@Nullable ImageClickListener imageClickListener) {
-        this.imageClickListener = imageClickListener;
+    public void setPostImageClickListener(@Nullable PostImageClickListener postImageClickListener) {
+        this.postImageClickListener = postImageClickListener;
+    }
+
+    public void setSubredditClickListener(@Nullable SubredditClickListener subredditClickListener) {
+        this.subredditClickListener = subredditClickListener;
     }
 }

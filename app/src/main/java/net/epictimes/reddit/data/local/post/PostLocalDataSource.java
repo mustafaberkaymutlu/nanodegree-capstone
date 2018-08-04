@@ -15,17 +15,17 @@ import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Maybe;
 import io.reactivex.schedulers.Schedulers;
 
 @LocalDataSource
 @Singleton
 public class PostLocalDataSource implements PostDataSource {
 
+    @NonNull
     private final PostDao postDao;
 
     @Inject
-    public PostLocalDataSource(PostDao postDao) {
+    PostLocalDataSource(@NonNull PostDao postDao) {
         this.postDao = postDao;
     }
 

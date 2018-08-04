@@ -2,6 +2,7 @@ package net.epictimes.reddit.di;
 
 import net.epictimes.reddit.RedditApp;
 import net.epictimes.reddit.data.PostRepositoryModule;
+import net.epictimes.reddit.data.SubredditRepositoryModule;
 import net.epictimes.reddit.data.UserRepositoryModule;
 import net.epictimes.reddit.data.local.LocalDataSourceModule;
 import net.epictimes.reddit.data.remote.RemoteDataSourceModule;
@@ -19,7 +20,8 @@ import dagger.android.AndroidInjectionModule;
         LocalDataSourceModule.class,
         RemoteDataSourceModule.class,
         UserRepositoryModule.class,
-        PostRepositoryModule.class})
+        PostRepositoryModule.class,
+        SubredditRepositoryModule.class})
 public interface SingletonComponent {
 
     @Component.Builder

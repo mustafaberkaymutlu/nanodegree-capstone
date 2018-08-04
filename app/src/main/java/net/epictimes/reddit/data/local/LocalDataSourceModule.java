@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room;
 
 import net.epictimes.reddit.RedditApp;
 import net.epictimes.reddit.data.local.post.PostDao;
+import net.epictimes.reddit.data.local.subreddit.SubredditDao;
 import net.epictimes.reddit.data.local.user.UserDao;
 
 import javax.inject.Singleton;
@@ -32,6 +33,12 @@ public class LocalDataSourceModule {
     @Provides
     UserDao provideUserDao(RedditDatabase db) {
         return db.userDao();
+    }
+
+    @Singleton
+    @Provides
+    SubredditDao provideSubredditDao(RedditDatabase db) {
+        return db.subredditDao();
     }
 
 }

@@ -70,10 +70,10 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         imageViewIcon = findViewById(R.id.imageViewIcon);
-        textViewUserName = findViewById(R.id.textViewUserName);
+        textViewUserName = findViewById(R.id.textViewSubscriberCount);
         textViewSubredditName = findViewById(R.id.textViewSubredditName);
         textViewPostTitle = findViewById(R.id.textViewPostTitle);
-        textViewPostSelfText = findViewById(R.id.textViewPostSelfText);
+        textViewPostSelfText = findViewById(R.id.textViewDescription);
         textViewTimeAgo = findViewById(R.id.textViewTimeAgo);
         imageViewPostImage = findViewById(R.id.imageViewPostImage);
         imageViewPlay = findViewById(R.id.imageViewPlay);
@@ -127,13 +127,9 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
     }
 
     private void updateView(@Nullable PostDetailViewEntity viewEntity) {
-        if (viewEntity != null) {
-            updateContent(viewEntity);
-        }
-    }
+        if (viewEntity == null) return;
 
-    private void updateContent(@NonNull PostDetailViewEntity content) {
-        final Post post = content.getPost();
+        final Post post = viewEntity.getPost();
         final String prefixedAuthorName = textViewUserName.getContext().getString(R.string.prefixed_author_name,
                 post.getAuthor());
         textViewUserName.setText(prefixedAuthorName);

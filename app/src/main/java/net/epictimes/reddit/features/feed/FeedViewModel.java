@@ -33,6 +33,9 @@ public class FeedViewModel extends BaseViewModel {
     final MutableLiveData<LoadingViewEntity> loadingLiveData = new MutableLiveData<>();
 
     @Nonnull
+    final SingleLiveEvent<String> navigateToSubredditDetailEvent = new SingleLiveEvent<>();
+
+    @Nonnull
     final SingleLiveEvent<String> navigateToPostDetailEvent = new SingleLiveEvent<>();
 
     @Nonnull
@@ -130,5 +133,9 @@ public class FeedViewModel extends BaseViewModel {
         } else {
             navigateToImageDetailEvent.setValue(post.getPreviewImage());
         }
+    }
+
+    public void onSubredditClicked(@NonNull Post post) {
+        navigateToSubredditDetailEvent.postValue(post.getSubreddit());
     }
 }

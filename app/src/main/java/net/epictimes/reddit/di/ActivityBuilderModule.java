@@ -6,6 +6,8 @@ import net.epictimes.reddit.features.image_detail.ImageDetailActivity;
 import net.epictimes.reddit.features.login.LoginActivity;
 import net.epictimes.reddit.features.post_detail.PostDetailActivity;
 import net.epictimes.reddit.features.post_detail.PostDetailModule;
+import net.epictimes.reddit.features.subreddit_detail.SubredditDetailActivity;
+import net.epictimes.reddit.features.subreddit_detail.SubredditDetailModule;
 import net.epictimes.reddit.features.video_detail.VideoDetailActivity;
 
 import dagger.Module;
@@ -25,6 +27,10 @@ abstract class ActivityBuilderModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = PostDetailModule.class)
     abstract PostDetailActivity contributePostDetailActivityInjector();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = SubredditDetailModule.class)
+    abstract SubredditDetailActivity contributeSubredditDetailActivityInjector();
 
     @ActivityScoped
     @ContributesAndroidInjector

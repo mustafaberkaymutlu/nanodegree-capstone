@@ -27,6 +27,6 @@ public class RetrievePost implements Interactor.RetrieveInteractor<String, Post>
     @Override
     public Flowable<Post> getBehaviorStream(@Nonnull Option<String> params) {
         final String postId = OptionUtils.someOrThrow(params);
-        return postRepository.getPost(postId);
+        return postRepository.retrievePost(postId);
     }
 }

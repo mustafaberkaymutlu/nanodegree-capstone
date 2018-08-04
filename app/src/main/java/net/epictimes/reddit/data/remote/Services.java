@@ -1,6 +1,7 @@
 package net.epictimes.reddit.data.remote;
 
 import net.epictimes.reddit.data.model.listing.ListingResponse;
+import net.epictimes.reddit.data.model.subreddit.SubredditResponse;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -12,6 +13,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface Services {
@@ -34,6 +36,11 @@ public interface Services {
             @Nonnull @Field("id") String id,
             @Nonnull @Field("rank") String rank,
             @Nonnull @Field("dir") String direction
+    );
+
+    @GET("/r/{subreddit-name}/about")
+    Observable<SubredditResponse> getSubreddit(
+            @Nullable @Path("subreddit-name") String subredditName
     );
 
 }

@@ -16,6 +16,7 @@ import net.epictimes.reddit.features.LoadingViewEntity;
 import net.epictimes.reddit.features.image_detail.ImageDetailActivity;
 import net.epictimes.reddit.features.login.LoginActivity;
 import net.epictimes.reddit.features.post_detail.PostDetailActivity;
+import net.epictimes.reddit.features.subreddit_detail.SubredditDetailActivity;
 import net.epictimes.reddit.features.video_detail.VideoDetailActivity;
 import net.epictimes.reddit.util.EndlessRecyclerViewScrollListener;
 import net.epictimes.reddit.util.Preconditions;
@@ -44,6 +45,7 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
         viewModel.userNotLoggedInLiveData.observe(this, __ -> navigateToLogin());
         viewModel.viewEntityLiveData.observe(this, this::updateView);
         viewModel.loadingLiveData.observe(this, this::updateLoading);
+        viewModel.navigateToSubredditDetailEvent.observe(this, this::navigateToSubredditDetail);
         viewModel.navigateToPostDetailEvent.observe(this, this::navigateToPostDetail);
         viewModel.navigateToImageDetailEvent.observe(this, this::navigateToImageDetail);
         viewModel.navigateToVideoDetailEvent.observe(this, this::navigateToVideoDetail);
@@ -79,7 +81,8 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
         recyclerView.addOnScrollListener(endlessRecyclerViewScrollListener);
 
         adapter.setPostClickListener(viewModel::onPostClicked);
-        adapter.setImageClickListener(viewModel::onImageClicked);
+        adapter.setSubredditClickListener(viewModel::onSubredditClicked);
+        adapter.setPostImageClickListener(viewModel::onImageClicked);
     }
 
     private void updateView(@Nullable FeedViewEntity viewEntity) {
@@ -106,6 +109,13 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
         final Intent intent = LoginActivity.newIntent(this);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    private void navigateToSubredditDetail(@Nullable String subredditName) {
+        if (subredditName == null) return;
+
+        final Intent subredditDetailIntent = SubredditDetailActivity.newIntent(this, subredditName);
+        startActivity(subredditDetailIntent);
     }
 
     private void navigateToPostDetail(@Nullable String postId) {

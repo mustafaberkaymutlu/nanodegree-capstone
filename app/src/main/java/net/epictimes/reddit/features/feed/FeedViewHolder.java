@@ -2,7 +2,6 @@ package net.epictimes.reddit.features.feed;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,19 +30,26 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
 
     FeedViewHolder(View itemView,
                    ItemClickListener postClickListener,
-                   ItemClickListener imageClickListener) {
+                   ItemClickListener postImageClickListener,
+                   ItemClickListener subredditItemClickListener) {
         super(itemView);
 
         imageViewIcon = itemView.findViewById(R.id.imageViewIcon);
-        textViewUserName = itemView.findViewById(R.id.textViewUserName);
+        textViewUserName = itemView.findViewById(R.id.textViewSubscriberCount);
         textViewSubredditName = itemView.findViewById(R.id.textViewSubredditName);
         textViewPostTitle = itemView.findViewById(R.id.textViewPostTitle);
-        textViewPostSelfText = itemView.findViewById(R.id.textViewPostSelfText);
+        textViewPostSelfText = itemView.findViewById(R.id.textViewDescription);
         textViewTimeAgo = itemView.findViewById(R.id.textViewTimeAgo);
         imageViewPostImage = itemView.findViewById(R.id.imageViewPostImage);
         imageViewPlay = itemView.findViewById(R.id.imageViewPlay);
 
-        imageViewPostImage.setOnClickListener(v -> imageClickListener.onItemClicked(getAdapterPosition()));
+        final View.OnClickListener subredditOnClickListener =
+                v -> subredditItemClickListener.onItemClicked(getAdapterPosition());
+
+        imageViewIcon.setOnClickListener(subredditOnClickListener);
+        textViewSubredditName.setOnClickListener(subredditOnClickListener);
+
+        imageViewPostImage.setOnClickListener(v -> postImageClickListener.onItemClicked(getAdapterPosition()));
         itemView.setOnClickListener(v -> postClickListener.onItemClicked(getAdapterPosition()));
     }
 
@@ -76,7 +82,7 @@ public class FeedViewHolder extends RecyclerView.ViewHolder {
                 post.getAuthor());
         textViewUserName.setText(prefixedAuthorName);
         textViewSubredditName.setText(post.getSubredditNamePrefixed());
-        textViewPostTitle.setText(Html.fromHtml(post.getTitle()));
+        textViewPostTitle.setText(post.getTitle());
         textViewPostSelfText.setText(post.getSelfText());
         textViewTimeAgo.setText(TimeAgo.using(post.getCreatedUtc() * 1000));
     }

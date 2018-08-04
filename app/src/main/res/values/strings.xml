@@ -13,4 +13,12 @@
     <string name="vote_down">Down voted!</string>
     <string name="vote_removed">Removed vote!</string>
     <string name="play">Play</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="unsubscribe">Unsubscribe</string>
+
+    <plurals name="subscriber_count">
+        <item quantity="zero">No subscribers</item>
+        <item quantity="one">One subscriber</item>
+        <item quantity="other">%d subscribers</item>
+    </plurals>
 </resources>

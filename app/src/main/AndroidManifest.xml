@@ -37,6 +37,8 @@
 
         <activity android:name=".features.post_detail.PostDetailActivity" />
 
+        <activity android:name=".features.subreddit_detail.SubredditDetailActivity" />
+
         <activity android:name=".features.image_detail.ImageDetailActivity" />
 
         <activity android:name=".features.video_detail.VideoDetailActivity" />

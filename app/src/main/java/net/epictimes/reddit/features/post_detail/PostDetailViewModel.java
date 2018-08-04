@@ -28,7 +28,7 @@ public class PostDetailViewModel extends BaseViewModel {
     final MutableLiveData<PostDetailViewEntity> viewEntityLiveData = new MutableLiveData<>();
 
     @Nonnull
-    final MutableLiveData<AlertViewEntity> alertViewEntitySingleLiveEvent = new SingleLiveEvent<>();
+    final SingleLiveEvent<AlertViewEntity> alertViewEntitySingleLiveEvent = new SingleLiveEvent<>();
 
     @Nonnull
     final SingleLiveEvent<String> navigateToImageDetailEvent = new SingleLiveEvent<>();

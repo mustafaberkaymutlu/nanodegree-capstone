@@ -11,7 +11,7 @@ import io.reactivex.ObservableTransformer;
 public class RedditVideoMapper implements ObservableTransformer<RedditVideoRaw, RedditVideo> {
 
     @Inject
-    public RedditVideoMapper() {
+    RedditVideoMapper() {
     }
 
     @Override

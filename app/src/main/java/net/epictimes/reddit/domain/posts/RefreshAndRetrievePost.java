@@ -32,6 +32,6 @@ public class RefreshAndRetrievePost implements Interactor.RetrieveInteractor<Str
                 .refreshPost(postId)
                 .toSingleDefault(Unit.DEFAULT)
                 .toFlowable()
-                .flatMap(o -> postRepository.getPost(postId));
+                .flatMap(o -> postRepository.retrievePost(postId));
     }
 }

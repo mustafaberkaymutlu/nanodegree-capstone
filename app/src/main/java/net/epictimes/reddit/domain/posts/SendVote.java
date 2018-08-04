@@ -27,7 +27,7 @@ public class SendVote implements Interactor.SendInteractor<SendVote.Params> {
     @Override
     public Completable getCompletable(@Nonnull Option<Params> paramsOption) {
         final Params params = OptionUtils.someOrThrow(paramsOption);
-        return postRepository.vote(params.id, params.vote);
+        return postRepository.sendVote(params.id, params.vote);
     }
 
     public static class Params {

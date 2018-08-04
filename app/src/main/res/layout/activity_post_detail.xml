@@ -55,7 +55,7 @@
                 tools:text="r/SubredditName" />
 
             <TextView
-                android:id="@+id/textViewUserName"
+                android:id="@+id/textViewSubscriberCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -73,11 +73,11 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUserName"
+                app:layout_constraintTop_toBottomOf="@+id/textViewSubscriberCount"
                 tools:text="Post title. " />
 
             <TextView
-                android:id="@+id/textViewPostSelfText"
+                android:id="@+id/textViewDescription"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -95,8 +95,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textViewUserName"
-                app:layout_constraintStart_toEndOf="@+id/textViewUserName"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textViewSubscriberCount"
+                app:layout_constraintStart_toEndOf="@+id/textViewSubscriberCount"
                 tools:text="5 minute ago" />
 
             <ImageView
@@ -110,7 +110,7 @@
                 app:layout_constraintDimensionRatio="h,16:9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewPostSelfText"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
                 tools:visibility="visible" />
 
             <Button

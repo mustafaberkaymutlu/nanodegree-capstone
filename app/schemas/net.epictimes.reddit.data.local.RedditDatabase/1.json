@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "86e05bb406f6fc412cbe616f463afeb9",
+    "identityHash": "8e46a816906a1de2b9897488e4d5861e",
     "entities": [
       {
         "tableName": "AccessToken",
@@ -169,11 +169,55 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "Subreddit",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`displayName` TEXT NOT NULL, `displayNamePrefixed` TEXT, `subscribers` INTEGER NOT NULL, `description` TEXT, `userIsSubscriber` INTEGER NOT NULL, PRIMARY KEY(`displayName`))",
+        "fields": [
+          {
+            "fieldPath": "displayName",
+            "columnName": "displayName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "displayNamePrefixed",
+            "columnName": "displayNamePrefixed",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "subscribers",
+            "columnName": "subscribers",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userIsSubscriber",
+            "columnName": "userIsSubscriber",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "displayName"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"86e05bb406f6fc412cbe616f463afeb9\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8e46a816906a1de2b9897488e4d5861e\")"
     ]
   }
 }

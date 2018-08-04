@@ -27,7 +27,7 @@ public class RetrieveBestPosts implements Interactor.RetrieveInteractor<Retrieve
     @Override
     public Flowable<Listing> getBehaviorStream(@Nonnull Option<Params> params) {
         final String after = params.match(params1 -> "t3_" + params1.lastPostId, () -> null);
-        return postRepository.getBestPosts(after);
+        return postRepository.retrieveBestPosts(after);
     }
 
     public static class Params {

@@ -35,7 +35,7 @@ public class PostRepository {
     }
 
     @Nonnull
-    public Flowable<Listing> getBestPosts(@Nullable String after) {
+    public Flowable<Listing> retrieveBestPosts(@Nullable String after) {
         return remoteDataSource
                 .getBestPosts(after)
                 .flatMap(listing ->
@@ -50,9 +50,8 @@ public class PostRepository {
     }
 
     @Nonnull
-    public Flowable<Post> getPost(@Nonnull String postId) {
-        return localDataSource
-                .getPost(postId);
+    public Flowable<Post> retrievePost(@Nonnull String postId) {
+        return localDataSource.getPost(postId);
     }
 
     @Nonnull
@@ -62,7 +61,8 @@ public class PostRepository {
                 .flatMapCompletable(localDataSource::savePost);
     }
 
-    public Completable vote(@NonNull String postId, Vote vote) {
+    @Nonnull
+    public Completable sendVote(@NonNull String postId, Vote vote) {
         return remoteDataSource.vote("t3_" + postId, vote.getVoteAsString());
     }
 }
