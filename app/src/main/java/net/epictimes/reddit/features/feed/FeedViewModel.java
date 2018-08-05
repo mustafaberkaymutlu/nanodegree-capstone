@@ -30,6 +30,9 @@ public class FeedViewModel extends BaseViewModel {
     final MutableLiveData<FeedViewEntity> viewEntityLiveData = new MutableLiveData<>();
 
     @Nonnull
+    final SingleLiveEvent<AlertViewEntity> alertViewEntitySingleLiveEvent = new SingleLiveEvent<>();
+
+    @Nonnull
     final MutableLiveData<LoadingViewEntity> loadingLiveData = new MutableLiveData<>();
 
     @Nonnull
@@ -93,7 +96,7 @@ public class FeedViewModel extends BaseViewModel {
                 .doOnNext(o -> postLoading(false))
                 .doOnError(o -> postLoading(false))
                 .doOnTerminate(() -> postLoading(false))
-                .subscribe(listing -> viewEntityLiveData.postValue(new FeedViewEntity.Content(listing, false)),
+                .subscribe(listing -> viewEntityLiveData.postValue(new FeedViewEntity(listing, false)),
                         this::showError);
     }
 
@@ -101,7 +104,7 @@ public class FeedViewModel extends BaseViewModel {
     private Disposable getBestPostsLoadMoreBehaviourStream(String after) {
         return retrieveBestPosts
                 .getBehaviorStream(Option.ofObj(new RetrieveBestPosts.Params(after)))
-                .subscribe(listing -> viewEntityLiveData.postValue(new FeedViewEntity.Content(listing, true)),
+                .subscribe(listing -> viewEntityLiveData.postValue(new FeedViewEntity(listing, true)),
                         this::showError);
     }
 
@@ -112,7 +115,7 @@ public class FeedViewModel extends BaseViewModel {
     private void showError(Throwable throwable) {
         Timber.e(throwable);
         final AlertViewEntity alertViewEntity = alertViewEntityMapper.create(throwable);
-        viewEntityLiveData.postValue(new FeedViewEntity.Error(alertViewEntity));
+        alertViewEntitySingleLiveEvent.postValue(alertViewEntity);
     }
 
     public void onUserRefreshed() {

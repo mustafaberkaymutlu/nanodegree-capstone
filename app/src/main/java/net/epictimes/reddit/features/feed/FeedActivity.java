@@ -51,6 +51,7 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
     protected void observeLiveData() {
         viewModel.userNotLoggedInLiveData.observe(this, __ -> navigateToLogin());
         viewModel.viewEntityLiveData.observe(this, this::updateView);
+        viewModel.alertViewEntitySingleLiveEvent.observe(this, this::showAlert);
         viewModel.loadingLiveData.observe(this, this::updateLoading);
         viewModel.navigateToSubredditDetailEvent.observe(this, this::navigateToSubredditDetail);
         viewModel.navigateToPostDetailEvent.observe(this, this::navigateToPostDetail);
@@ -107,18 +108,14 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
     }
 
     private void updateView(@Nullable FeedViewEntity viewEntity) {
-        if (viewEntity instanceof FeedViewEntity.Content) {
-            final FeedViewEntity.Content feedViewEntity = (FeedViewEntity.Content) viewEntity;
-            final Listing listing = feedViewEntity.getListing();
+        if (viewEntity == null) return;
 
-            if (feedViewEntity.isPaginated()) {
-                adapter.addItems(listing.getChildren());
-            } else {
-                adapter.setItems(listing.getChildren());
-            }
-        } else if (viewEntity instanceof FeedViewEntity.Error) {
-            final FeedViewEntity.Error feedViewEntity = (FeedViewEntity.Error) viewEntity;
-            showAlert(feedViewEntity.getAlertViewEntity());
+        final Listing listing = viewEntity.getListing();
+
+        if (viewEntity.isPaginated()) {
+            adapter.addItems(listing.getChildren());
+        } else {
+            adapter.setItems(listing.getChildren());
         }
     }
 
