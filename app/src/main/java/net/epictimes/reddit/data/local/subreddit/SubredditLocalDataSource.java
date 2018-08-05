@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import net.epictimes.reddit.data.SubredditDataSource;
 import net.epictimes.reddit.data.model.subreddit.Subreddit;
 import net.epictimes.reddit.data.model.subreddit.SubscribeRequest;
+import net.epictimes.reddit.data.model.subreddit_search.SubredditSearch;
+
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -39,6 +42,11 @@ public class SubredditLocalDataSource implements SubredditDataSource {
 
     @Override
     public Completable sendSubscription(SubscribeRequest subscribeRequest) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Flowable<List<SubredditSearch>> search(@Nonnull String query) {
         throw new UnsupportedOperationException();
     }
 

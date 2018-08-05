@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import net.epictimes.reddit.data.model.listing.ListingResponse;
 import net.epictimes.reddit.data.model.subreddit.SubredditResponse;
+import net.epictimes.reddit.data.model.subreddit_search.SubredditSearchResponse;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -51,6 +52,15 @@ public interface Services {
             @NonNull @Field("action") String action,
             @Field("skip_initial_defaults") boolean skipInitialDefaults,
             @NonNull @Field("sr_name") String subredditName
+    );
+
+    @FormUrlEncoded
+    @POST("/api/search_subreddits")
+    Observable<SubredditSearchResponse> searchSubreddits(
+            @Field("exact") boolean exact,
+            @Field("include_over_18") boolean includeOver18,
+            @Field("include_unadvertisable") boolean includeUnadvertisable,
+            @NonNull @Field("query") String query
     );
 
 }

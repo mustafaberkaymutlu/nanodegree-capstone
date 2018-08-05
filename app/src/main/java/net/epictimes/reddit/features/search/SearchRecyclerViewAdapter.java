@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import net.epictimes.reddit.data.model.subreddit.Subreddit;
+import net.epictimes.reddit.data.model.subreddit_search.SubredditSearch;
 import net.epictimes.reddit.util.ItemClickListener;
 
 import java.util.ArrayList;
@@ -18,13 +18,13 @@ import javax.annotation.Nonnull;
 public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SubredditViewHolder> {
 
     @Nonnull
-    private final List<Subreddit> subredditList = new ArrayList<>();
+    private final List<SubredditSearch> subredditList = new ArrayList<>();
 
     @Nullable
     private SubredditClickListener subredditClickListener;
 
     interface SubredditClickListener {
-        void onSubredditClicked(@Nonnull Subreddit subreddit);
+        void onSubredditClicked(@Nonnull SubredditSearch subreddit);
     }
 
     @NonNull
@@ -42,7 +42,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SubredditVie
 
     @Override
     public void onBindViewHolder(@NonNull SubredditViewHolder holder, int position) {
-        final Subreddit subreddit = subredditList.get(position);
+        final SubredditSearch subreddit = subredditList.get(position);
         holder.bind(subreddit);
     }
 
@@ -51,13 +51,13 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SubredditVie
         return subredditList.size();
     }
 
-    public void setItems(@Nonnull List<Subreddit> newSubreddits) {
+    public void setItems(@Nonnull List<SubredditSearch> newSubreddits) {
         subredditList.clear();
         subredditList.addAll(newSubreddits);
         notifyDataSetChanged();
     }
 
-    public void addItems(@Nonnull List<Subreddit> newSubreddits) {
+    public void addItems(@Nonnull List<SubredditSearch> newSubreddits) {
         final int previousSize = subredditList.size();
         subredditList.addAll(newSubreddits);
         notifyItemRangeInserted(previousSize, newSubreddits.size());

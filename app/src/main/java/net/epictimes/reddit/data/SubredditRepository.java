@@ -4,11 +4,13 @@ import android.support.annotation.NonNull;
 
 import net.epictimes.reddit.data.model.subreddit.Subreddit;
 import net.epictimes.reddit.data.model.subreddit.SubscribeRequest;
+import net.epictimes.reddit.data.model.subreddit_search.SubredditSearch;
 import net.epictimes.reddit.di.qualifier.LocalDataSource;
 import net.epictimes.reddit.di.qualifier.RemoteDataSource;
 
 import org.reactivestreams.Subscriber;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
@@ -63,6 +65,11 @@ public class SubredditRepository {
     @NonNull
     public Completable sendSubscription(SubscribeRequest subscribeRequest) {
         return remoteDataSource.sendSubscription(subscribeRequest);
+    }
+
+    @NonNull
+    public Flowable<List<SubredditSearch>> search(@NonNull String query) {
+        return remoteDataSource.search(query);
     }
 
 }
