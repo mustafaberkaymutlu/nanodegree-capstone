@@ -1,5 +1,7 @@
 package net.epictimes.reddit.data.remote;
 
+import android.support.annotation.NonNull;
+
 import net.epictimes.reddit.data.model.listing.ListingResponse;
 import net.epictimes.reddit.data.model.subreddit.SubredditResponse;
 
@@ -27,7 +29,7 @@ public interface Services {
 
     @GET("/by_id/names")
     Observable<ListingResponse> getPost(
-            @Nullable @Query("names") String commaSeparatedFullNames
+            @NonNull @Query("names") String commaSeparatedFullNames
     );
 
     @FormUrlEncoded
@@ -41,6 +43,14 @@ public interface Services {
     @GET("/r/{subreddit-name}/about")
     Observable<SubredditResponse> getSubreddit(
             @Nullable @Path("subreddit-name") String subredditName
+    );
+
+    @FormUrlEncoded
+    @POST("/api/subscribe")
+    Completable sendSubscription(
+            @NonNull @Field("action") String action,
+            @Field("skip_initial_defaults") boolean skipInitialDefaults,
+            @NonNull @Field("sr_name") String subredditName
     );
 
 }

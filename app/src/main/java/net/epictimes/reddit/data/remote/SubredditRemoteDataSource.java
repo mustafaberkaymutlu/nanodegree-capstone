@@ -6,6 +6,7 @@ import net.epictimes.reddit.data.SubredditDataSource;
 import net.epictimes.reddit.data.model.subreddit.Subreddit;
 import net.epictimes.reddit.data.model.subreddit.SubredditMapper;
 import net.epictimes.reddit.data.model.subreddit.SubredditResponse;
+import net.epictimes.reddit.data.model.subreddit.SubscribeRequest;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -42,5 +43,14 @@ public class SubredditRemoteDataSource implements SubredditDataSource {
     @Override
     public Completable saveSubreddit(Subreddit subreddit) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Completable sendSubscription(SubscribeRequest subscribeRequest) {
+        return services
+                .sendSubscription(subscribeRequest.getAction().getApiString(),
+                        subscribeRequest.isSkipInitialDefaults(),
+                        subscribeRequest.getSubredditName())
+                .subscribeOn(Schedulers.io());
     }
 }

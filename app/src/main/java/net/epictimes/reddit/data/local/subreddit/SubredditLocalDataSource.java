@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import net.epictimes.reddit.data.SubredditDataSource;
 import net.epictimes.reddit.data.model.subreddit.Subreddit;
+import net.epictimes.reddit.data.model.subreddit.SubscribeRequest;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -34,6 +35,11 @@ public class SubredditLocalDataSource implements SubredditDataSource {
         return Completable
                 .fromAction(() -> subredditDao.insert(subreddit))
                 .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Completable sendSubscription(SubscribeRequest subscribeRequest) {
+        throw new UnsupportedOperationException();
     }
 
 }
