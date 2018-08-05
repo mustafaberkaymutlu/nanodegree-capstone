@@ -1,5 +1,7 @@
 package net.epictimes.reddit.di;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import net.epictimes.reddit.RedditApp;
 import net.epictimes.reddit.features.alert.AlertViewEntityMapper;
 import net.epictimes.reddit.util.StringProvider;
@@ -22,6 +24,12 @@ class SingletonModule {
     @Provides
     AlertViewEntityMapper provideAlertViewEntityMapper(StringProvider stringProvider) {
         return new AlertViewEntityMapper(stringProvider);
+    }
+
+    @Singleton
+    @Provides
+    FirebaseAnalytics provideFirebaseAnalytics(RedditApp redditApp) {
+        return FirebaseAnalytics.getInstance(redditApp);
     }
 
 }

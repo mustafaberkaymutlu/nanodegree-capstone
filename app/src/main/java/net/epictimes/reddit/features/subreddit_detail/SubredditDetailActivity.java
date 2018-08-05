@@ -3,19 +3,23 @@ package net.epictimes.reddit.features.subreddit_detail;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.model.subreddit.Subreddit;
 import net.epictimes.reddit.features.BaseActivity;
+import net.epictimes.reddit.util.AnalyticsConstants;
 import net.epictimes.reddit.util.Preconditions;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 
 public class SubredditDetailActivity extends BaseActivity<SubredditDetailViewModel> {
     static final String KEY_SUBREDDIT_NAME = "subreddit_name";
@@ -25,6 +29,9 @@ public class SubredditDetailActivity extends BaseActivity<SubredditDetailViewMod
     private TextView textViewSubscriberCount;
     private TextView textViewDescription;
     private Button buttonSubscribe;
+
+    @Inject
+    FirebaseAnalytics firebaseAnalytics;
 
     public static Intent newIntent(@Nonnull Context context, @Nonnull String subredditName) {
         Preconditions.checkNotNull(context);
@@ -74,5 +81,13 @@ public class SubredditDetailActivity extends BaseActivity<SubredditDetailViewMod
         textViewSubscriberCount.setText(subscriberCount);
         textViewDescription.setText(subreddit.getDescription());
         buttonSubscribe.setText(subreddit.isUserIsSubscriber() ? R.string.unsubscribe : R.string.subscribe);
+
+        logSubredditView(subreddit);
+    }
+
+    private void logSubredditView(@NonNull Subreddit subreddit) {
+        final Bundle bundle = new Bundle();
+        bundle.putString(AnalyticsConstants.SUBREDDIT_NAME, subreddit.getDisplayName());
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
     }
 }

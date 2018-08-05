@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.marlonlom.utilities.timeago.TimeAgo;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.model.post.Post;
@@ -27,12 +28,14 @@ import net.epictimes.reddit.data.model.vote.Vote;
 import net.epictimes.reddit.features.BaseActivity;
 import net.epictimes.reddit.features.image_detail.ImageDetailActivity;
 import net.epictimes.reddit.features.video_detail.VideoDetailActivity;
+import net.epictimes.reddit.util.AnalyticsConstants;
 import net.epictimes.reddit.util.GlideApp;
 import net.epictimes.reddit.util.Preconditions;
 
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
 
@@ -52,6 +55,9 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
     private ImageButton imageButtonUpVote;
     private ImageButton imageButtonDownVote;
     private TextView textViewCommentCount;
+
+    @Inject
+    FirebaseAnalytics firebaseAnalytics;
 
     private CustomTabsServiceConnection customTabsServiceConnection;
 
@@ -172,6 +178,8 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
                 imageViewPlay.setVisibility(View.GONE);
             }
         }
+
+        logPostView(post);
     }
 
     private void updateVoteButtons(@NonNull Vote vote) {
@@ -226,11 +234,13 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
     }
 
     private void share(@NonNull Post post) {
-        Intent sendIntent = new Intent();
+        final Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, post.getUrl());
         sendIntent.setType("text/plain");
         startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.share_chooser_title)));
+
+        logShare(post);
     }
 
     private void displayVoteMessage(Vote vote) {
@@ -245,5 +255,24 @@ public class PostDetailActivity extends BaseActivity<PostDetailViewModel> {
                 Toast.makeText(this, R.string.vote_removed, Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    private void logPostView(@NonNull Post post) {
+        final Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, post.getId());
+        bundle.putString(AnalyticsConstants.POST_TITLE, post.getTitle());
+        bundle.putString(AnalyticsConstants.POST_AUTHOR, post.getAuthor());
+        bundle.putString(AnalyticsConstants.SUBREDDIT_NAME, post.getSubreddit());
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+    }
+
+    private void logShare(@NonNull Post post) {
+        final Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, post.getId());
+        bundle.putString(AnalyticsConstants.POST_TITLE, post.getTitle());
+        bundle.putString(AnalyticsConstants.POST_AUTHOR, post.getAuthor());
+        bundle.putString(AnalyticsConstants.SUBREDDIT_NAME, post.getSubreddit());
+        bundle.putString(AnalyticsConstants.POST_SHARE_TEXT, post.getUrl());
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SHARE, bundle);
     }
 }

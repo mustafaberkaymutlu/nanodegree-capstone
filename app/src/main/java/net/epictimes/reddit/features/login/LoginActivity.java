@@ -12,6 +12,8 @@ import android.support.customtabs.CustomTabsServiceConnection;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.remote.RemoteHelper;
 import net.epictimes.reddit.features.BaseActivity;
@@ -20,10 +22,15 @@ import net.epictimes.reddit.features.feed.FeedActivity;
 
 import java.util.UUID;
 
+import javax.inject.Inject;
+
 public class LoginActivity extends BaseActivity<LoginViewModel> {
 
     private String uuid;
     private CustomTabsServiceConnection customTabsServiceConnection;
+
+    @Inject
+    FirebaseAnalytics firebaseAnalytics;
 
     public static Intent newIntent(Context context) {
         return new Intent(context, LoginActivity.class);
@@ -44,7 +51,10 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
         super.onCreate(savedInstanceState);
 
         final Button buttonLogin = findViewById(R.id.buttonLogin);
-        buttonLogin.setOnClickListener(v -> openLoginScreen());
+        buttonLogin.setOnClickListener(v -> {
+            openLoginScreen();
+            logLoginAction();
+        });
     }
 
     @Override
@@ -111,6 +121,11 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
         };
 
         CustomTabsClient.bindCustomTabsService(this, "com.android.chrome", customTabsServiceConnection);
+    }
+
+    private void logLoginAction() {
+        final Bundle bundle = new Bundle();
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle);
     }
 
 }
