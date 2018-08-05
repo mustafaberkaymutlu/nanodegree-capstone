@@ -43,5 +43,14 @@
 
         <activity android:name=".features.video_detail.VideoDetailActivity" />
 
+        <activity android:name=".features.search.SearchActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable_subreddit" />
+        </activity>
+
     </application>
 </manifest>

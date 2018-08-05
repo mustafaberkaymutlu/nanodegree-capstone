@@ -1,5 +1,7 @@
 package net.epictimes.reddit.features.feed;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +10,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.model.listing.Listing;
@@ -16,6 +22,7 @@ import net.epictimes.reddit.features.LoadingViewEntity;
 import net.epictimes.reddit.features.image_detail.ImageDetailActivity;
 import net.epictimes.reddit.features.login.LoginActivity;
 import net.epictimes.reddit.features.post_detail.PostDetailActivity;
+import net.epictimes.reddit.features.search.SearchActivity;
 import net.epictimes.reddit.features.subreddit_detail.SubredditDetailActivity;
 import net.epictimes.reddit.features.video_detail.VideoDetailActivity;
 import net.epictimes.reddit.util.EndlessRecyclerViewScrollListener;
@@ -55,14 +62,28 @@ public class FeedActivity extends BaseActivity<FeedViewModel> {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
         recyclerView = findViewById(R.id.recyclerView);
         initRecyclerView();
+        setSupportActionBar(toolbar);
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
             endlessRecyclerViewScrollListener.resetState();
             viewModel.onUserRefreshed();
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        final MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.feed, menu);
+
+        final SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        final SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, SearchActivity.class)));
+
+        return true;
     }
 
     private void initRecyclerView() {
