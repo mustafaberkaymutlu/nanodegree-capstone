@@ -6,18 +6,16 @@ import net.epictimes.reddit.data.model.child.ChildRaw;
 import net.epictimes.reddit.data.model.post.Post;
 import net.epictimes.reddit.data.model.post.PostMapper;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Function;
 
-public class ListingMapper implements ObservableTransformer<ListingRaw, Listing> {
+public class ListingMapper implements Function<ListingRaw, Listing> {
 
     @NonNull
     private final PostMapper postMapper;
@@ -28,17 +26,17 @@ public class ListingMapper implements ObservableTransformer<ListingRaw, Listing>
     }
 
     @Override
-    public ObservableSource<Listing> apply(Observable<ListingRaw> upstream) {
-        return upstream
-                .doOnNext(this::validateFields)
-                .flatMap(listingRaw ->
-                        Observable
-                                .fromIterable(listingRaw.getChildren())
-                                .map(ChildRaw::getData)
-                                .compose(postMapper)
-                                .toList()
-                                .toObservable()
-                                .map(posts -> buildListing(listingRaw, posts)));
+    public Listing apply(ListingRaw listingRaw) {
+        validateFields(listingRaw);
+
+        final List<ChildRaw> childrenRaw = listingRaw.getChildren();
+
+        final List<Post> posts = new ArrayList<>();
+        for (ChildRaw childRaw : childrenRaw) {
+            posts.add(postMapper.apply(childRaw.getData()));
+        }
+
+        return buildListing(listingRaw, posts);
     }
 
     @NonNull

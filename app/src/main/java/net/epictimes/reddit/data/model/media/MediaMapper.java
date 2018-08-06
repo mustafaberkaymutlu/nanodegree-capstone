@@ -1,14 +1,14 @@
 package net.epictimes.reddit.data.model.media;
 
+import net.epictimes.reddit.data.model.reddit_video.RedditVideo;
 import net.epictimes.reddit.data.model.reddit_video.RedditVideoMapper;
+import net.epictimes.reddit.data.model.reddit_video.RedditVideoRaw;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Function;
 
-public class MediaMapper implements ObservableTransformer<MediaRaw, Media> {
+public class MediaMapper implements Function<MediaRaw, Media> {
 
     private final RedditVideoMapper redditVideoMapper;
 
@@ -18,16 +18,13 @@ public class MediaMapper implements ObservableTransformer<MediaRaw, Media> {
     }
 
     @Override
-    public ObservableSource<Media> apply(Observable<MediaRaw> upstream) {
-        return upstream
-                .flatMap(mediaRaw -> {
-                    if (mediaRaw.getRedditVideoRaw() == null) {
-                        return Observable.just(new Media(null));
-                    }
+    public Media apply(MediaRaw mediaRaw) {
+        if (mediaRaw.getRedditVideoRaw() == null) {
+            return new Media(null);
+        }
 
-                    return Observable.just(mediaRaw.getRedditVideoRaw())
-                            .compose(redditVideoMapper)
-                            .map(Media::new);
-                });
+        final RedditVideoRaw redditVideoRaw = mediaRaw.getRedditVideoRaw();
+        final RedditVideo redditVideo = redditVideoMapper.apply(redditVideoRaw);
+        return new Media(redditVideo);
     }
 }

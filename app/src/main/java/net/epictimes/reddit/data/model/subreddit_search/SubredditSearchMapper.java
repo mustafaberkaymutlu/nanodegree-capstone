@@ -6,21 +6,19 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Function;
 
-public class SubredditSearchMapper implements ObservableTransformer<SubredditSearchRaw, SubredditSearch> {
+public class SubredditSearchMapper implements Function<SubredditSearchRaw, SubredditSearch> {
 
     @Inject
-    public SubredditSearchMapper() {
+    SubredditSearchMapper() {
     }
 
     @Override
-    public ObservableSource<SubredditSearch> apply(Observable<SubredditSearchRaw> upstream) {
-        return upstream
-                .doOnNext(this::validate)
-                .map(this::buildSubredditSearch);
+    public SubredditSearch apply(SubredditSearchRaw raw) {
+        validate(raw);
+
+        return buildSubredditSearch(raw);
     }
 
     @NonNull

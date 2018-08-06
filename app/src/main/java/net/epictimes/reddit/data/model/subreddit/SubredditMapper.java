@@ -1,31 +1,35 @@
 package net.epictimes.reddit.data.model.subreddit;
 
+import android.support.annotation.NonNull;
+
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Function;
 
-public class SubredditMapper implements ObservableTransformer<SubredditRaw, Subreddit> {
+public class SubredditMapper implements Function<SubredditRaw, Subreddit> {
 
     @Inject
     SubredditMapper() {
     }
 
     @Override
-    public ObservableSource<Subreddit> apply(Observable<SubredditRaw> upstream) {
-        return upstream
-                .doOnNext(this::validate)
-                .map(subredditRaw ->
-                        new Subreddit.Builder()
-                                .withDisplayName(subredditRaw.getDisplayName())
-                                .withDisplayNamePrefixed(subredditRaw.getDisplayNamePrefixed())
-                                .withSubscribers(subredditRaw.getSubscribers())
-                                .withDescription(subredditRaw.getDescription())
-                                .withUserIsSubscriber(subredditRaw.getUserIsSubscriber())
-                                .build());
+    public Subreddit apply(SubredditRaw subredditRaw) {
+        validate(subredditRaw);
+
+        return buildSubreddit(subredditRaw);
+    }
+
+    @NonNull
+    private Subreddit buildSubreddit(SubredditRaw subredditRaw) {
+        return new Subreddit.Builder()
+                .withDisplayName(subredditRaw.getDisplayName())
+                .withDisplayNamePrefixed(subredditRaw.getDisplayNamePrefixed())
+                .withSubscribers(subredditRaw.getSubscribers())
+                .withDescription(subredditRaw.getDescription())
+                .withUserIsSubscriber(subredditRaw.getUserIsSubscriber())
+                .build();
     }
 
     private void validate(SubredditRaw raw) {
@@ -56,5 +60,4 @@ public class SubredditMapper implements ObservableTransformer<SubredditRaw, Subr
             throw new IllegalStateException(message);
         }
     }
-
 }

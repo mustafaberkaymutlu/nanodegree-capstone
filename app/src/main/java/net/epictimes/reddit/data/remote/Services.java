@@ -10,8 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.Single;
+import io.reactivex.Flowable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -24,12 +23,12 @@ public interface Services {
     String BASE_URL = "https://oauth.reddit.com";
 
     @GET("/best")
-    Single<ListingResponse> getBestPosts(
+    Flowable<ListingResponse> getBestPosts(
             @Nullable @Query("after") String after
     );
 
     @GET("/by_id/names")
-    Observable<ListingResponse> getPost(
+    Flowable<ListingResponse> getPost(
             @NonNull @Query("names") String commaSeparatedFullNames
     );
 
@@ -42,7 +41,7 @@ public interface Services {
     );
 
     @GET("/r/{subreddit-name}/about")
-    Observable<SubredditResponse> getSubreddit(
+    Flowable<SubredditResponse> getSubreddit(
             @Nullable @Path("subreddit-name") String subredditName
     );
 
@@ -56,7 +55,7 @@ public interface Services {
 
     @FormUrlEncoded
     @POST("/api/search_subreddits")
-    Observable<SubredditSearchResponse> searchSubreddits(
+    Flowable<SubredditSearchResponse> searchSubreddits(
             @Field("exact") boolean exact,
             @Field("include_over_18") boolean includeOver18,
             @Field("include_unadvertisable") boolean includeUnadvertisable,

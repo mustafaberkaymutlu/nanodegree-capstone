@@ -49,8 +49,7 @@ public class SubredditRemoteDataSource implements SubredditDataSource {
                 .getSubreddit(subredditName)
                 .subscribeOn(Schedulers.io())
                 .map(SubredditResponse::getSubredditRaw)
-                .compose(subredditMapper)
-                .toFlowable(BackpressureStrategy.DROP);
+                .map(subredditMapper);
     }
 
     @Override
@@ -74,7 +73,7 @@ public class SubredditRemoteDataSource implements SubredditDataSource {
                 .subscribeOn(Schedulers.io())
                 .map(SubredditSearchResponse::getSubredditsRaw)
                 .flatMapIterable((Function<List<SubredditSearchRaw>, Iterable<SubredditSearchRaw>>) subredditSearchRaws -> subredditSearchRaws)
-                .compose(subredditSearchMapper)
+                .map(subredditSearchMapper)
                 .toList()
                 .toFlowable();
     }

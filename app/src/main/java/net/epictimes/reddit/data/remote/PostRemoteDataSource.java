@@ -16,10 +16,8 @@ import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 @RemoteDataSource
@@ -43,10 +41,8 @@ public class PostRemoteDataSource implements PostDataSource {
         return services
                 .getBestPosts(after)
                 .subscribeOn(Schedulers.io())
-                .toObservable()
                 .map(ListingResponse::getData)
-                .compose(listingMapper)
-                .toFlowable(BackpressureStrategy.LATEST);
+                .map(listingMapper);
     }
 
     @Override
@@ -60,9 +56,8 @@ public class PostRemoteDataSource implements PostDataSource {
                 .getPost("t3_" + postId)
                 .subscribeOn(Schedulers.io())
                 .map(ListingResponse::getData)
-                .compose(listingMapper)
-                .map(listing -> listing.getChildren().get(0))
-                .toFlowable(BackpressureStrategy.ERROR);
+                .map(listingMapper)
+                .map(listing -> listing.getChildren().get(0));
     }
 
     @Override
@@ -71,9 +66,9 @@ public class PostRemoteDataSource implements PostDataSource {
     }
 
     @Override
-    public Completable vote(@NonNull String id, String voteDirection) {
+    public Completable vote(@NonNull String postId, String voteDirection) {
         return services
-                .vote(id, "2", voteDirection)
+                .vote("t3_" + postId, "2", voteDirection)
                 .subscribeOn(Schedulers.io());
     }
 }

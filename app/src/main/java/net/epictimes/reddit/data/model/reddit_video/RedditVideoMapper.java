@@ -4,21 +4,19 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Function;
 
-public class RedditVideoMapper implements ObservableTransformer<RedditVideoRaw, RedditVideo> {
+public class RedditVideoMapper implements Function<RedditVideoRaw, RedditVideo> {
 
     @Inject
     RedditVideoMapper() {
     }
 
     @Override
-    public ObservableSource<RedditVideo> apply(Observable<RedditVideoRaw> upstream) {
-        return upstream
-                .doOnNext(this::validate)
-                .map(redditVideoRaw -> new RedditVideo(redditVideoRaw.getHlsUrl()));
+    public RedditVideo apply(RedditVideoRaw redditVideoRaw) {
+        validate(redditVideoRaw);
+
+        return new RedditVideo(redditVideoRaw.getHlsUrl());
     }
 
     private void validate(RedditVideoRaw raw) {

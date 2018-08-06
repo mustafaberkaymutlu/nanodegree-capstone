@@ -4,21 +4,19 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Function;
 
-public class SourceMapper implements ObservableTransformer<SourceRaw, Source> {
+public class SourceMapper implements Function<SourceRaw, Source> {
 
     @Inject
     SourceMapper() {
     }
 
     @Override
-    public ObservableSource<Source> apply(Observable<SourceRaw> upstream) {
-        return upstream
-                .doOnNext(this::validate)
-                .map(sourceRaw -> new Source(sourceRaw.getUrl()));
+    public Source apply(SourceRaw sourceRaw) {
+        validate(sourceRaw);
+
+        return new Source(sourceRaw.getUrl());
     }
 
     private void validate(SourceRaw raw) {

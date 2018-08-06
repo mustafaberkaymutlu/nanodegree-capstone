@@ -23,6 +23,6 @@ public interface PostDataSource {
 
     Completable savePost(@Nonnull Post post);
 
-    Completable vote(@NonNull String id, String voteDirection);
+    Completable vote(@NonNull String postId, String voteDirection);
 
 }

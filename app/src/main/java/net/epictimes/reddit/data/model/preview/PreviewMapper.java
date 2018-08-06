@@ -1,16 +1,19 @@
 package net.epictimes.reddit.data.model.preview;
 
+import net.epictimes.reddit.data.model.image.Image;
 import net.epictimes.reddit.data.model.image.ImageMapper;
+import net.epictimes.reddit.data.model.image.ImageRaw;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Function;
 
-public class PreviewMapper implements ObservableTransformer<PreviewRaw, Preview> {
+public class PreviewMapper implements Function<PreviewRaw, Preview> {
 
     private final ImageMapper imageMapper;
 
@@ -20,17 +23,17 @@ public class PreviewMapper implements ObservableTransformer<PreviewRaw, Preview>
     }
 
     @Override
-    public ObservableSource<Preview> apply(Observable<PreviewRaw> upstream) {
-        return upstream
-                .doOnNext(this::validate)
-                .flatMap(previewRaw ->
-                        Observable
-                                .just(previewRaw.getImages())
-                                .flatMap(Observable::fromIterable)
-                                .compose(imageMapper)
-                                .toList()
-                                .toObservable()
-                                .map(Preview::new));
+    public Preview apply(PreviewRaw previewRaw) {
+        validate(previewRaw);
+
+        final List<ImageRaw> imagesRaw = previewRaw.getImages();
+
+        final List<Image> images = new ArrayList<>();
+        for (ImageRaw imageRaw : imagesRaw) {
+            images.add(imageMapper.apply(imageRaw));
+        }
+
+        return new Preview(images);
     }
 
     private void validate(PreviewRaw raw) {

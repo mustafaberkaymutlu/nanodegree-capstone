@@ -63,6 +63,6 @@ public class PostRepository {
 
     @Nonnull
     public Completable sendVote(@NonNull String postId, Vote vote) {
-        return remoteDataSource.vote("t3_" + postId, vote.getVoteAsString());
+        return remoteDataSource.vote(postId, vote.getVoteAsString());
     }
 }

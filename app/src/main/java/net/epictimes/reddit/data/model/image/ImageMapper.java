@@ -1,16 +1,16 @@
 package net.epictimes.reddit.data.model.image;
 
+import net.epictimes.reddit.data.model.image.source.Source;
 import net.epictimes.reddit.data.model.image.source.SourceMapper;
+import net.epictimes.reddit.data.model.image.source.SourceRaw;
 
 import org.apache.commons.lang3.StringUtils;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.ObservableTransformer;
+import io.reactivex.functions.Function;
 
-public class ImageMapper implements ObservableTransformer<ImageRaw, Image> {
+public class ImageMapper implements Function<ImageRaw, Image> {
 
     private final SourceMapper sourceMapper;
 
@@ -20,14 +20,13 @@ public class ImageMapper implements ObservableTransformer<ImageRaw, Image> {
     }
 
     @Override
-    public ObservableSource<Image> apply(Observable<ImageRaw> upstream) {
-        return upstream
-                .doOnNext(this::validate)
-                .flatMap(imageRaw ->
-                        Observable
-                                .just(imageRaw.getSourceRaw())
-                                .compose(sourceMapper)
-                                .map(Image::new));
+    public Image apply(ImageRaw imageRaw) {
+        validate(imageRaw);
+
+        final SourceRaw sourceRaw = imageRaw.getSourceRaw();
+        final Source source = sourceMapper.apply(sourceRaw);
+
+        return new Image(source);
     }
 
     private void validate(ImageRaw raw) {
