@@ -17,6 +17,8 @@ import dagger.android.AndroidInjectionModule;
 @Component(modules = {SingletonModule.class,
         AndroidInjectionModule.class,
         ActivityBuilderModule.class,
+        BroadcastReceiverBuilderModule.class,
+        ServiceBuilderModule.class,
         LocalDataSourceModule.class,
         RemoteDataSourceModule.class,
         UserRepositoryModule.class,

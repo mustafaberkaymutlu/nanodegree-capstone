@@ -18,6 +18,7 @@
     <string name="unsubscribe">Unsubscribe</string>
     <string name="search_subreddit_hint">Search Subreddits</string>
     <string name="search_subreddit_title">Search Subreddits</string>
+    <string name="best_posts">Best Posts</string>
 
     <plurals name="subscriber_count">
         <item quantity="zero">No subscribers</item>
