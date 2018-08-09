@@ -10,10 +10,13 @@ import javax.annotation.Nonnull;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 
 public interface SubredditDataSource {
 
     Flowable<Subreddit> getSubreddit(@Nonnull String subredditName);
+
+    Maybe<Subreddit> getSubredditMaybe(@Nonnull String subredditName);
 
     Completable saveSubreddit(Subreddit subreddit);
 

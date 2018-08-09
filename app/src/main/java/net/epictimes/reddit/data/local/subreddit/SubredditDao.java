@@ -10,6 +10,7 @@ import net.epictimes.reddit.data.model.subreddit.Subreddit;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 
 @Dao
 public interface SubredditDao {
@@ -22,5 +23,8 @@ public interface SubredditDao {
 
     @Query("SELECT * from Subreddit where displayName = :subredditName")
     Flowable<Subreddit> getSubreddit(String subredditName);
+
+    @Query("SELECT * from Subreddit where displayName = :subredditName")
+    Maybe<Subreddit> getSubredditMaybe(String subredditName);
 
 }

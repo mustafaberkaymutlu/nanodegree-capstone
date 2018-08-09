@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.schedulers.Schedulers;
 
 public class SubredditLocalDataSource implements SubredditDataSource {
@@ -30,6 +31,13 @@ public class SubredditLocalDataSource implements SubredditDataSource {
     public Flowable<Subreddit> getSubreddit(@Nonnull String subredditName) {
         return subredditDao
                 .getSubreddit(subredditName)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Maybe<Subreddit> getSubredditMaybe(@Nonnull String subredditName) {
+        return subredditDao
+                .getSubredditMaybe(subredditName)
                 .subscribeOn(Schedulers.io());
     }
 

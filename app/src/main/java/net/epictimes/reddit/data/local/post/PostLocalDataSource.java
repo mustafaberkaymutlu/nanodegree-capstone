@@ -15,6 +15,7 @@ import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 @LocalDataSource
@@ -46,6 +47,13 @@ public class PostLocalDataSource implements PostDataSource {
     public Flowable<Post> getPost(@Nonnull String postId) {
         return postDao
                 .getPost(postId)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Single<Post> getPostSingle(@Nonnull String postId) {
+        return postDao
+                .getPostSingle(postId)
                 .subscribeOn(Schedulers.io());
     }
 

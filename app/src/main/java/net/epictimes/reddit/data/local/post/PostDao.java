@@ -10,6 +10,7 @@ import net.epictimes.reddit.data.model.post.Post;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 @Dao
 public interface PostDao {
@@ -22,5 +23,8 @@ public interface PostDao {
 
     @Query("SELECT * from Post where id = :postId")
     Flowable<Post> getPost(String postId);
+
+    @Query("SELECT * from Post where id = :postId")
+    Single<Post> getPostSingle(String postId);
 
 }

@@ -18,6 +18,7 @@ import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 @RemoteDataSource
@@ -58,6 +59,11 @@ public class PostRemoteDataSource implements PostDataSource {
                 .map(ListingResponse::getData)
                 .map(listingMapper)
                 .map(listing -> listing.getChildren().get(0));
+    }
+
+    @Override
+    public Single<Post> getPostSingle(@Nonnull String postId) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

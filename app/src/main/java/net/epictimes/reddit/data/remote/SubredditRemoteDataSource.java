@@ -17,9 +17,9 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -50,6 +50,11 @@ public class SubredditRemoteDataSource implements SubredditDataSource {
                 .subscribeOn(Schedulers.io())
                 .map(SubredditResponse::getSubredditRaw)
                 .map(subredditMapper);
+    }
+
+    @Override
+    public Maybe<Subreddit> getSubredditMaybe(@Nonnull String subredditName) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

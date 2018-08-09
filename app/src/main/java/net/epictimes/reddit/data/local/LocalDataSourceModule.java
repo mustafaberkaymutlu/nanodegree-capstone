@@ -3,6 +3,7 @@ package net.epictimes.reddit.data.local;
 import android.arch.persistence.room.Room;
 
 import net.epictimes.reddit.RedditApp;
+import net.epictimes.reddit.data.local.listing_offline.ListingDao;
 import net.epictimes.reddit.data.local.post.PostDao;
 import net.epictimes.reddit.data.local.subreddit.SubredditDao;
 import net.epictimes.reddit.data.local.user.UserDao;
@@ -39,6 +40,12 @@ public class LocalDataSourceModule {
     @Provides
     SubredditDao provideSubredditDao(RedditDatabase db) {
         return db.subredditDao();
+    }
+
+    @Singleton
+    @Provides
+    ListingDao provideListingDao(RedditDatabase db) {
+        return db.listingDao();
     }
 
 }

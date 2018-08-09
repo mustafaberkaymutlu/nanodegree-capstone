@@ -19,7 +19,7 @@ public class RetrieveBestPosts implements Interactor.RetrieveInteractor<Retrieve
     private final PostRepository postRepository;
 
     @Inject
-    public RetrieveBestPosts(@Nonnull PostRepository postRepository) {
+    RetrieveBestPosts(@Nonnull PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 

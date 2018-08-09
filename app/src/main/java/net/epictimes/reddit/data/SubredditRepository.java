@@ -11,7 +11,6 @@ import net.epictimes.reddit.di.qualifier.RemoteDataSource;
 import org.reactivestreams.Subscriber;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -38,14 +37,13 @@ public class SubredditRepository {
 
     @Nonnull
     public Flowable<Subreddit> retrieveSubreddit(@NonNull String subreddit) {
-        return Flowable.concatArrayEager(
-                getSubredditFromLocal(subreddit),
-                getSubredditFromRemote(subreddit).debounce(400, TimeUnit.MILLISECONDS)
+        return Flowable.concat(getSubredditFromLocal(subreddit),
+                getSubredditFromRemote(subreddit)
         );
     }
 
     private Flowable<Subreddit> getSubredditFromLocal(@NonNull String subreddit) {
-        return localDataSource.getSubreddit(subreddit);
+        return localDataSource.getSubredditMaybe(subreddit).toFlowable();
     }
 
     private Flowable<Subreddit> getSubredditFromRemote(@NonNull String subreddit) {

@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 public interface PostDataSource {
 
@@ -20,6 +21,8 @@ public interface PostDataSource {
     Completable savePosts(List<Post> posts);
 
     Flowable<Post> getPost(@Nonnull String postId);
+
+    Single<Post> getPostSingle(@Nonnull String postId);
 
     Completable savePost(@Nonnull Post post);
 
