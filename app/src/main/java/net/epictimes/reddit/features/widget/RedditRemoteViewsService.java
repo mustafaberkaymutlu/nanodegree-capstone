@@ -78,7 +78,7 @@ public class RedditRemoteViewsService extends RemoteViewsService {
 
             final RemoteViews views = new RemoteViews(getPackageName(), R.layout.list_item_widget_post);
 
-            views.setTextViewText(R.id.textViewPostTitle, getReadableIngredient(post));
+            views.setTextViewText(R.id.textViewPostTitle, getReadablePost(post));
 
             final Bundle extras = new Bundle();
             extras.putString(RedditWidgetProvider.EXTRA_POST_ID, post.getId());
@@ -114,7 +114,7 @@ public class RedditRemoteViewsService extends RemoteViewsService {
             postList.addAll(posts);
         }
 
-        private CharSequence getReadableIngredient(Post post) {
+        private CharSequence getReadablePost(Post post) {
             final String prefixedAuthor = getString(R.string.prefixed_author_name, post.getAuthor());
             return prefixedAuthor + ": " + post.getTitle();
         }
