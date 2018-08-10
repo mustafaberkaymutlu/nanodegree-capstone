@@ -16,7 +16,7 @@ public class ListingOfflineMapper implements Function<Listing, List<ListingOffli
     }
 
     @Override
-    public List<ListingOffline> apply(Listing listing) throws Exception {
+    public List<ListingOffline> apply(Listing listing) {
         final ArrayList<ListingOffline> listingOfflines = new ArrayList<>();
 
         for (Post post : listing.getChildren()) {
