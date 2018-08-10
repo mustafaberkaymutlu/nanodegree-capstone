@@ -9,8 +9,6 @@ import net.epictimes.reddit.data.model.subreddit.SubredditResponse;
 import net.epictimes.reddit.data.model.subreddit.SubscribeRequest;
 import net.epictimes.reddit.data.model.subreddit_search.SubredditSearch;
 import net.epictimes.reddit.data.model.subreddit_search.SubredditSearchMapper;
-import net.epictimes.reddit.data.model.subreddit_search.SubredditSearchRaw;
-import net.epictimes.reddit.data.model.subreddit_search.SubredditSearchResponse;
 
 import java.util.List;
 
@@ -20,8 +18,8 @@ import javax.inject.Inject;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.SingleSubject;
 
 public class SubredditRemoteDataSource implements SubredditDataSource {
 
@@ -73,13 +71,9 @@ public class SubredditRemoteDataSource implements SubredditDataSource {
 
     @Override
     public Flowable<List<SubredditSearch>> search(@Nonnull String query) {
-        return services
-                .searchSubreddits(false, false, true, query)
-                .subscribeOn(Schedulers.io())
-                .map(SubredditSearchResponse::getSubredditsRaw)
-                .flatMapIterable((Function<List<SubredditSearchRaw>, Iterable<SubredditSearchRaw>>) subredditSearchRaws -> subredditSearchRaws)
-                .map(subredditSearchMapper)
-                .toList()
-                .toFlowable();
+        final SingleSubject<List<SubredditSearch>> callback = SingleSubject.create();
+        new SearchTask(services, subredditSearchMapper, callback).execute(query);
+        return callback.toFlowable();
     }
+
 }
