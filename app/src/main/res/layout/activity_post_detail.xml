@@ -38,6 +38,7 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:contentDescription="@string/content_desc_subreddit_icon"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -106,6 +107,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:contentDescription="@string/content_desc_post_image"
                 android:visibility="gone"
                 app:layout_constraintDimensionRatio="h,16:9"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -158,7 +160,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintStart_toEndOf="@+id/imageButtonDownVote"
                 app:layout_constraintTop_toTopOf="@+id/view"
-                app:srcCompat="@drawable/ic_message_white_24dp" />
+                app:srcCompat="@drawable/ic_message_white_24dp"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/textViewCommentCount"
@@ -181,6 +184,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:contentDescription="@string/content_desc_up_vote"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintStart_toStartOf="@+id/view"
                 app:layout_constraintTop_toTopOf="@+id/view"
@@ -193,6 +197,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:contentDescription="@string/content_desc_down_vote"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintStart_toEndOf="@+id/textViewUpVoteCount"
                 app:layout_constraintTop_toTopOf="@+id/view"

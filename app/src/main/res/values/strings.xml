@@ -19,6 +19,10 @@
     <string name="search_subreddit_hint">Search Subreddits</string>
     <string name="search_subreddit_title">Search Subreddits</string>
     <string name="best_posts">Best Posts</string>
+    <string name="content_desc_subreddit_icon">Subreddit Icon</string>
+    <string name="content_desc_post_image">Post Image</string>
+    <string name="content_desc_up_vote">Up Vote</string>
+    <string name="content_desc_down_vote">Down Vote</string>
 
     <plurals name="subscriber_count">
         <item quantity="zero">No subscribers</item>
