@@ -17,7 +17,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.remote.RemoteHelper;
 import net.epictimes.reddit.features.BaseActivity;
-import net.epictimes.reddit.features.alert.AlertViewEntity;
 import net.epictimes.reddit.features.feed.FeedActivity;
 
 import java.util.UUID;
@@ -43,7 +42,8 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
 
     @Override
     protected void observeLiveData() {
-        viewModel.viewEntityLiveData.observe(this, this::updateView);
+        viewModel.loginCompleteEvent.observe(this, __ -> onLoginComplete());
+        viewModel.alertEvent.observe(this, this::showAlert);
     }
 
     @Override
@@ -86,18 +86,10 @@ public class LoginActivity extends BaseActivity<LoginViewModel> {
         }
     }
 
-    private void updateView(LoginViewEntity loginViewEntity) {
-        if (loginViewEntity instanceof LoginViewEntity.Loading) {
-
-        } else if (loginViewEntity instanceof LoginViewEntity.Error) {
-            final LoginViewEntity.Error loginViewEntity1 = (LoginViewEntity.Error) loginViewEntity;
-            final AlertViewEntity alertViewEntity = loginViewEntity1.getAlertViewEntity();
-            showAlert(alertViewEntity);
-        } else if (loginViewEntity instanceof LoginViewEntity.LoginComplete) {
-            Toast.makeText(this, "We logged in", Toast.LENGTH_SHORT).show();
-            startActivity(FeedActivity.newIntent(this));
-            finish();
-        }
+    private void onLoginComplete() {
+        Toast.makeText(this, "We logged in", Toast.LENGTH_SHORT).show();
+        startActivity(FeedActivity.newIntent(this));
+        finish();
     }
 
     private void openLoginScreen() {
