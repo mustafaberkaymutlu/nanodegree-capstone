@@ -3,6 +3,7 @@ package net.epictimes.reddit.data.model.subreddit;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import javax.annotation.Nonnull;
 
@@ -21,6 +22,9 @@ public class Subreddit {
     private String description;
 
     private boolean userIsSubscriber;
+
+    @Nullable
+    private String headerImg;
 
     public Subreddit() {
     }
@@ -66,12 +70,22 @@ public class Subreddit {
         this.userIsSubscriber = userIsSubscriber;
     }
 
+    @Nullable
+    public String getHeaderImg() {
+        return headerImg;
+    }
+
+    public void setHeaderImg(@Nullable String headerImg) {
+        this.headerImg = headerImg;
+    }
+
     private Subreddit(Builder builder) {
         displayName = builder.displayName;
         displayNamePrefixed = builder.displayNamePrefixed;
         subscribers = builder.subscribers;
         description = builder.description;
         userIsSubscriber = builder.userIsSubscriber;
+        headerImg = builder.headerImg;
     }
 
     public static final class Builder {
@@ -80,6 +94,7 @@ public class Subreddit {
         private int subscribers;
         private String description;
         private boolean userIsSubscriber;
+        private String headerImg;
 
         public Builder() {
         }
@@ -111,6 +126,12 @@ public class Subreddit {
         @Nonnull
         public Builder withUserIsSubscriber(boolean userIsSubscriber) {
             this.userIsSubscriber = userIsSubscriber;
+            return this;
+        }
+
+        @Nonnull
+        public Builder withHeaderImg(@Nullable String headerImg) {
+            this.headerImg = headerImg;
             return this;
         }
 

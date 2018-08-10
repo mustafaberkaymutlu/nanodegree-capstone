@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2ff8e11434616eb3bfc7eca3205ee769",
+    "identityHash": "c1227ca33696bbde45ab90ccac5ecf34",
     "entities": [
       {
         "tableName": "AccessToken",
@@ -172,7 +172,7 @@
       },
       {
         "tableName": "Subreddit",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`displayName` TEXT NOT NULL, `displayNamePrefixed` TEXT, `subscribers` INTEGER NOT NULL, `description` TEXT, `userIsSubscriber` INTEGER NOT NULL, PRIMARY KEY(`displayName`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`displayName` TEXT NOT NULL, `displayNamePrefixed` TEXT, `subscribers` INTEGER NOT NULL, `description` TEXT, `userIsSubscriber` INTEGER NOT NULL, `headerImg` TEXT, PRIMARY KEY(`displayName`))",
         "fields": [
           {
             "fieldPath": "displayName",
@@ -203,6 +203,12 @@
             "columnName": "userIsSubscriber",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "headerImg",
+            "columnName": "headerImg",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -264,7 +270,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2ff8e11434616eb3bfc7eca3205ee769\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c1227ca33696bbde45ab90ccac5ecf34\")"
     ]
   }
 }

@@ -19,6 +19,9 @@ public class SubredditRaw {
     @SerializedName("user_is_subscriber")
     private Boolean userIsSubscriber;
 
+    @SerializedName("header_img")
+    private String headerImg;
+
     public String getDisplayName() {
         return displayName;
     }
@@ -37,5 +40,9 @@ public class SubredditRaw {
 
     public Boolean getUserIsSubscriber() {
         return userIsSubscriber;
+    }
+
+    public String getHeaderImg() {
+        return headerImg;
     }
 }

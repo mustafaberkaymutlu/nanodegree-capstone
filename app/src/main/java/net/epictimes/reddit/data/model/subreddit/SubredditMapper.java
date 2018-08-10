@@ -29,6 +29,7 @@ public class SubredditMapper implements Function<SubredditRaw, Subreddit> {
                 .withSubscribers(subredditRaw.getSubscribers())
                 .withDescription(subredditRaw.getDescription())
                 .withUserIsSubscriber(subredditRaw.getUserIsSubscriber())
+                .withHeaderImg(subredditRaw.getHeaderImg())
                 .build();
     }
 

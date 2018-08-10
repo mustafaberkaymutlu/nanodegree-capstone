@@ -16,6 +16,7 @@ import net.epictimes.reddit.R;
 import net.epictimes.reddit.data.model.subreddit.Subreddit;
 import net.epictimes.reddit.features.BaseActivity;
 import net.epictimes.reddit.util.AnalyticsConstants;
+import net.epictimes.reddit.util.GlideApp;
 import net.epictimes.reddit.util.Preconditions;
 
 import javax.annotation.Nonnull;
@@ -81,6 +82,13 @@ public class SubredditDetailActivity extends BaseActivity<SubredditDetailViewMod
         textViewSubscriberCount.setText(subscriberCount);
         textViewDescription.setText(subreddit.getDescription());
         buttonSubscribe.setText(subreddit.isUserIsSubscriber() ? R.string.unsubscribe : R.string.subscribe);
+
+        if (subreddit.getHeaderImg() != null) {
+            GlideApp
+                    .with(this)
+                    .load(subreddit.getHeaderImg())
+                    .into(imageViewIcon);
+        }
 
         logSubredditView(subreddit);
     }
